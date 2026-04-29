@@ -1,0 +1,68 @@
+{
+  "bot": {
+    "name": "ProxBot v.1",
+    "brand": "tu-homelab",
+    "footer": "ProxBot v.1 - tu-homelab",
+    "color": "0x0f4c81"
+  },
+  "network": {
+    "title": "Red del homelab",
+    "items": [
+      {
+        "name": "LAN principal",
+        "value": "192.168.1.0/24"
+      },
+      {
+        "name": "Router",
+        "value": "192.168.1.1"
+      }
+    ]
+  },
+  "services": [
+    {
+      "name": "Servidor principal",
+      "description": "Servidor o nodo principal del homelab",
+      "host": "192.168.1.10",
+      "port": 8006,
+      "url": "https://192.168.1.10:8006",
+      "ssh": "ssh usuario@192.168.1.10",
+      "enabled": true,
+      "check": true,
+      "tags": ["principal"]
+    },
+    {
+      "name": "Servicio web interno",
+      "description": "Ejemplo de servicio web local",
+      "host": "192.168.1.20",
+      "port": 3000,
+      "url": "http://servicio.local",
+      "enabled": true,
+      "check": true,
+      "tags": ["web"]
+    }
+  ],
+  "domains": [
+    {
+      "name": "servicio.local",
+      "target": "Servicio web interno",
+      "enabled": true
+    }
+  ],
+  "ssh": [
+    {
+      "name": "Servidor principal",
+      "command": "ssh usuario@192.168.1.10",
+      "enabled": true
+    }
+  ],
+  "pending": [
+    "Editar config.json con tus servicios reales",
+    "Comprobar DNS local",
+    "Probar checks de puertos"
+  ],
+  "security": [
+    "No exponer servicios sensibles directamente a Internet",
+    "Usar VPN o acceso privado para administrar el homelab",
+    "Mantener copias de seguridad antes de tocar servicios importantes"
+  ]
+}
