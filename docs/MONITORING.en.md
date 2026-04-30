@@ -174,6 +174,14 @@ whether an alert channel is configured, and the latest saved monitoring state.
 The command is read-only: it does not modify `config.json`, does not enable or
 disable monitoring, and does not expose full IDs or secrets.
 
+## /ultimodiagnostico command
+
+`/ultimodiagnostico` shows the latest diagnostics saved by automatic monitoring,
+including timestamp, OK checks and grouped failures.
+
+The command is read-only and uses `data/last-diagnostics.json`. If no diagnostics
+have been saved yet, it shows a clear message.
+
 ## Current limitations
 
 - No periodic summaries are sent.
@@ -185,4 +193,4 @@ disable monitoring, and does not expose full IDs or secrets.
 
 ## Next v0.3.0 steps
 
-- Add `/ultimodiagnostico` to inspect the latest saved diagnostics result.
+- Test monitoring on a real server before publishing the release.

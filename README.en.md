@@ -22,6 +22,7 @@ The core idea is simple: the code does not know your homelab. Services, IPs, dom
 - Stores simple notes with `/log` and `/verlog`.
 - Shows installation status with `/status`.
 - Shows automatic monitoring status with `/monitor`.
+- Shows the latest saved diagnostics with `/ultimodiagnostico`.
 - Supports guided setup with `npm run setup`.
 
 ## What It Is Not
@@ -210,6 +211,7 @@ Timeouts:
 - `/panel`: main panel.
 - `/status`: basic ProxBot status.
 - `/monitor`: automatic monitoring status.
+- `/ultimodiagnostico`: latest diagnostics saved by monitoring.
 - `/ips`: configured service hosts.
 - `/dominios`: configured domains.
 - `/ssh`: SSH cheat sheet.
@@ -242,6 +244,7 @@ Try in Discord:
 ```text
 /status
 /monitor
+/ultimodiagnostico
 /panel
 /diagnostico
 ```

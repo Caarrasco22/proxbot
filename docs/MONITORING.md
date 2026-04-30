@@ -173,6 +173,14 @@ ejecuta, si hay canal de alertas configurado y el ultimo estado guardado.
 El comando es solo de lectura: no modifica `config.json`, no activa ni desactiva
 la monitorizacion y no muestra IDs completos ni secretos.
 
+## Comando /ultimodiagnostico
+
+`/ultimodiagnostico` muestra el ultimo diagnostico guardado por la monitorizacion
+automatica, incluyendo fecha, checks OK y fallos agrupados.
+
+El comando es solo de lectura y usa `data/last-diagnostics.json`. Si todavia no
+hay diagnostico guardado, mostrara un aviso claro.
+
 ## Limitaciones actuales
 
 - No envia resumenes periodicos.
@@ -184,4 +192,4 @@ la monitorizacion y no muestra IDs completos ni secretos.
 
 ## Proximos pasos de v0.3.0
 
-- Anadir `/ultimodiagnostico` para consultar el ultimo diagnostico guardado.
+- Probar la monitorizacion en un servidor real antes de publicar la version.

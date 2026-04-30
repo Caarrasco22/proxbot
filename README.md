@@ -22,6 +22,7 @@ La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en 
 - Notas simples con `/log` y `/verlog`.
 - Comando `/status` con informacion basica de instalacion.
 - Comando `/monitor` para consultar el estado de la monitorizacion automatica.
+- Comando `/ultimodiagnostico` para revisar el ultimo diagnostico guardado.
 - Instalacion manual o setup guiado con `npm run setup`.
 
 ## Que NO es
@@ -217,6 +218,7 @@ Los timeouts se pueden ajustar en `config.json`:
 - `/panel`: panel central.
 - `/status`: estado basico de ProxBot.
 - `/monitor`: estado de la monitorizacion automatica.
+- `/ultimodiagnostico`: ultimo diagnostico guardado por monitoring.
 - `/ips`: servicios con host configurado.
 - `/dominios`: dominios definidos en config.
 - `/ssh`: chuleta SSH.
@@ -257,6 +259,7 @@ Prueba en Discord:
 ```text
 /status
 /monitor
+/ultimodiagnostico
 /panel
 /diagnostico
 ```
