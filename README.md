@@ -59,6 +59,13 @@ En Windows PowerShell puedes usar:
 copy .env.example .env
 ```
 
+Si PowerShell bloquea `npm` por la politica de ejecucion de scripts, usa `npm.cmd`:
+
+```powershell
+npm.cmd install
+npm.cmd run init-config
+```
+
 Despues de esto tienes que crear la aplicacion en Discord, rellenar `.env`, editar `config.json`, registrar comandos y arrancar el bot. Las siguientes secciones van paso a paso.
 
 ## Crear aplicacion en Discord Developer Portal
@@ -198,6 +205,8 @@ Si no puedes invitarlo, revisa que tienes permisos suficientes en ese servidor.
 
 `npm run init-config` crea `config.json` desde `config.example.json`.
 
+Edita `config.json` con tus redes, servicios, dominios, comandos SSH, pendientes y checklist de seguridad.
+
 Ejecuta una comprobacion basica:
 
 ```bash
@@ -262,6 +271,12 @@ npm run deploy
 ```
 
 Si Discord devuelve `Missing Access`, revisa que el bot este invitado al servidor correcto y que `DISCORD_GUILD_ID` sea el ID de ese servidor.
+
+En Windows, si `npm` esta bloqueado por PowerShell:
+
+```powershell
+npm.cmd run deploy
+```
 
 ## Arrancar en local
 
@@ -348,6 +363,16 @@ Comprueba:
 - El bot esta invitado con el scope `applications.commands`.
 - El bot tiene permisos suficientes en el servidor.
 - Estas usando el token correcto.
+
+### Los comandos slash no aparecen
+
+Comprueba:
+
+- Has ejecutado `npm run deploy` despues de configurar `.env`.
+- `DISCORD_GUILD_ID` apunta al servidor correcto.
+- Invitaste el bot con el scope `applications.commands`.
+- Estas mirando el mismo servidor donde registraste los comandos.
+- Discord puede tardar unos segundos en refrescar los comandos.
 
 ## Roadmap
 
