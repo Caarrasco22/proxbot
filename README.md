@@ -199,6 +199,7 @@ Mas detalles en [docs/CONFIG.md](docs/CONFIG.md). Hay ejemplos en [docs/examples
 
 ## Inventario
 
+El inventario tambien esta disponible desde el boton `Inventario` de `/panel`.
 `/inventario` y `/servicio-info` muestran documentacion de servicios desde
 `config.json` en modo solo lectura. No ejecutan comandos, no hacen checks de red
 y no llaman a APIs externas.

@@ -71,6 +71,34 @@ function getInventorySummary(config, services = getActiveServices(config)) {
   };
 }
 
+function getInventoryFacets(services = []) {
+  const categories = new Map();
+  const tags = new Map();
+
+  asArray(services).filter(isService).forEach(service => {
+    const category = serviceCategory(service);
+
+    if (category) {
+      const key = category.trim();
+      categories.set(key, (categories.get(key) || 0) + 1);
+    }
+
+    serviceTags(service).forEach(tag => {
+      const key = tag.trim();
+      tags.set(key, (tags.get(key) || 0) + 1);
+    });
+  });
+
+  const sortEntries = entries => [...entries]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([name, count]) => ({ name, count }));
+
+  return {
+    categories: sortEntries(categories.entries()),
+    tags: sortEntries(tags.entries())
+  };
+}
+
 function matchesTag(service, tag) {
   if (!tag) {
     return true;
@@ -201,6 +229,7 @@ function formatServiceListItem(service) {
 module.exports = {
   getActiveServices,
   getInventorySummary,
+  getInventoryFacets,
   findServices,
   findServiceByName,
   formatServiceDetails,

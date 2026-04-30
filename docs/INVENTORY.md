@@ -28,6 +28,9 @@ Los comandos de inventario:
 
 Muestra un resumen de servicios activos del homelab.
 
+El mismo resumen tambien esta disponible desde el boton `Inventario` del panel
+principal (`/panel`), pensado para consultar rapido sin escribir filtros.
+
 Opciones:
 
 - `tag`: filtra por una etiqueta concreta.

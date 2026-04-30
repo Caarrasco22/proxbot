@@ -28,6 +28,9 @@ Inventory commands:
 
 Shows a summary of active homelab services.
 
+The same summary is also available from the `Inventario` button in the main
+panel (`/panel`), useful for quick checks without typing filters.
+
 Options:
 
 - `tag`: filters by a specific tag.

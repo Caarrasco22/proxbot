@@ -192,6 +192,7 @@ More details: [docs/CONFIG.md](docs/CONFIG.md). Examples: [docs/examples](docs/e
 
 ## Inventory
 
+The inventory is also available from the `Inventario` button in `/panel`.
 `/inventario` and `/servicio-info` show service documentation from `config.json`
 in read-only mode. They do not execute commands, do not run network checks and do
 not call external APIs.
