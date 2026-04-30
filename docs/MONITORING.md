@@ -165,6 +165,14 @@ Aunque `notifyOnlyOnChange` sea `false`, ProxBot no envia resumenes periodicos
 todavia. El comportamiento actual sigue siendo seguro: solo se notifican cambios
 de fallo y recuperacion para evitar spam.
 
+## Comando /monitor
+
+`/monitor` muestra si la monitorizacion automatica esta activa, cada cuanto se
+ejecuta, si hay canal de alertas configurado y el ultimo estado guardado.
+
+El comando es solo de lectura: no modifica `config.json`, no activa ni desactiva
+la monitorizacion y no muestra IDs completos ni secretos.
+
 ## Limitaciones actuales
 
 - No envia resumenes periodicos.
@@ -176,4 +184,4 @@ de fallo y recuperacion para evitar spam.
 
 ## Proximos pasos de v0.3.0
 
-- Anadir comandos de consulta como `/monitor` y `/ultimodiagnostico`.
+- Anadir `/ultimodiagnostico` para consultar el ultimo diagnostico guardado.
