@@ -285,11 +285,62 @@ Run:
 npm install
 ```
 
-## Roadmap
+## Project Versions
 
-- v0.1.0: stable config and real diagnostics.
-- v0.2.0: guided setup, Debian/Ubuntu installer, `/status`, bilingual docs.
-- v0.3.0: automatic monitoring and no-spam alerts. See [docs/MONITORING.en.md](docs/MONITORING.en.md).
+| Version | Status | Focus |
+|--------|--------|-------|
+| v0.1.0 | Released | Configurable base, panel and manual diagnostics |
+| v0.2.0 | Released | Guided setup, installer and `/status` |
+| v0.3.0 | In development | Automatic monitoring and no-spam alerts |
+
+### v0.1.0 - Configurable base
+
+Added:
+
+- Functional Discord bot with slash commands.
+- `config.json` based configuration.
+- Public `config.example.json` template.
+- Main `/panel`.
+- Commands for services, IPs, domains, SSH, network, pending items and security.
+- Manual diagnostics with `/diagnostico`.
+- Manual checks with `/checkdns`, `/checkpuerto` and `/checkurl`.
+- Notes/logging with `/log` and `/verlog`.
+- Initial documentation.
+- MIT License.
+
+### v0.2.0 - Guided installation and documentation
+
+Added:
+
+- `npm run setup` for guided `.env` and `config.json` creation.
+- `scripts/install.sh` for Debian/Ubuntu installation.
+- `/status` command.
+- Configurable diagnostics timeouts.
+- Spanish/English documentation.
+- `README.en.md`.
+- `docs/INSTALL.md` and `docs/INSTALL.en.md`.
+- `config.json` examples.
+- systemd and Git guides.
+- Release notes.
+
+### v0.3.0 - Automatic monitoring
+
+Status: in development until the release is published.
+
+Added or planned:
+
+- `monitoring` section in `config.json`.
+- Internal monitoring engine.
+- Local `data/status-cache.json` and `data/last-diagnostics.json` files.
+- Alerts when a check changes from OK to failed.
+- Recovery alerts when a check returns to OK.
+- Anti-spam behavior with `notifyOnlyOnChange`.
+- `/monitor` command.
+- `/ultimodiagnostico` command.
+- Monitoring documentation in [docs/MONITORING.en.md](docs/MONITORING.en.md).
+
+## Next Steps
+
 - v0.4.0: web UI only if it is genuinely useful.
 
 ## License

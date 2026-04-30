@@ -329,11 +329,62 @@ Ejecuta:
 npm install
 ```
 
-## Roadmap
+## Versiones del proyecto
 
-- v0.1.0: configuracion estable y diagnostico real.
-- v0.2.0: setup guiado, instalador Debian/Ubuntu, `/status` y docs bilingues.
-- v0.3.0: monitorizacion automatica y alertas sin spam. Ver [docs/MONITORING.md](docs/MONITORING.md).
+| Version | Estado | Enfoque |
+|--------|--------|---------|
+| v0.1.0 | Publicada | Base configurable, panel y diagnostico manual |
+| v0.2.0 | Publicada | Setup guiado, instalador y `/status` |
+| v0.3.0 | En desarrollo | Monitorizacion automatica y alertas sin spam |
+
+### v0.1.0 - Base configurable
+
+Funcionalidades añadidas:
+
+- Bot de Discord funcional con comandos slash.
+- Configuracion mediante `config.json`.
+- Plantilla publica `config.example.json`.
+- Panel principal con `/panel`.
+- Comandos para servicios, IPs, dominios, SSH, red, pendientes y seguridad.
+- Diagnostico manual con `/diagnostico`.
+- Checks manuales con `/checkdns`, `/checkpuerto` y `/checkurl`.
+- Logs/notas con `/log` y `/verlog`.
+- Documentacion inicial.
+- Licencia MIT.
+
+### v0.2.0 - Instalacion guiada y documentacion
+
+Funcionalidades añadidas:
+
+- `npm run setup` para crear `.env` y `config.json` de forma guiada.
+- `scripts/install.sh` para instalacion en Debian/Ubuntu.
+- Comando `/status`.
+- Timeouts configurables para diagnostico.
+- Documentacion bilingue espanol/ingles.
+- `README.en.md`.
+- `docs/INSTALL.md` y `docs/INSTALL.en.md`.
+- Ejemplos de `config.json`.
+- Guias de systemd y Git.
+- Release notes.
+
+### v0.3.0 - Monitorizacion automatica
+
+Estado: en desarrollo hasta que se publique la release.
+
+Funcionalidades añadidas o en preparacion:
+
+- Seccion `monitoring` en `config.json`.
+- Motor interno de monitorizacion.
+- Archivos locales `data/status-cache.json` y `data/last-diagnostics.json`.
+- Alertas automaticas cuando un check pasa de OK a fallo.
+- Alertas de recuperacion cuando un check vuelve a OK.
+- Proteccion anti-spam con `notifyOnlyOnChange`.
+- Comando `/monitor`.
+- Comando `/ultimodiagnostico`.
+- Documentacion de monitorizacion en [docs/MONITORING.md](docs/MONITORING.md).
+
+## Proximos pasos
+
 - v0.4.0: interfaz web solo si aporta valor real.
 
 ## Licencia
