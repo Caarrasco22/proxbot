@@ -32,6 +32,26 @@ function validateConfig(config) {
     }
   }
 
+  if (config.diagnostics !== undefined) {
+    if (!config.diagnostics || typeof config.diagnostics !== "object" || Array.isArray(config.diagnostics)) {
+      warnings.push("`diagnostics` deberia ser un objeto.");
+    } else {
+      if (
+        config.diagnostics.portTimeoutMs !== undefined &&
+        typeof config.diagnostics.portTimeoutMs !== "number"
+      ) {
+        warnings.push("`diagnostics.portTimeoutMs` deberia ser un numero.");
+      }
+
+      if (
+        config.diagnostics.urlTimeoutMs !== undefined &&
+        typeof config.diagnostics.urlTimeoutMs !== "number"
+      ) {
+        warnings.push("`diagnostics.urlTimeoutMs` deberia ser un numero.");
+      }
+    }
+  }
+
   if (!Array.isArray(config.services)) {
     errors.push("`services` debe ser un array.");
   } else {

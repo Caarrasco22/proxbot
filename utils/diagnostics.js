@@ -1,9 +1,10 @@
 const dns = require("dns").promises;
 const net = require("net");
 
-const DEFAULT_TIMEOUT = 2500;
+const DEFAULT_PORT_TIMEOUT = 2000;
+const DEFAULT_URL_TIMEOUT = 5000;
 
-function checkPort(host, port, timeout = DEFAULT_TIMEOUT) {
+function checkPort(host, port, timeout = DEFAULT_PORT_TIMEOUT) {
   return new Promise(resolve => {
     const start = Date.now();
     const socket = new net.Socket();
@@ -26,7 +27,7 @@ function checkPort(host, port, timeout = DEFAULT_TIMEOUT) {
   });
 }
 
-async function checkUrl(url, timeout = DEFAULT_TIMEOUT) {
+async function checkUrl(url, timeout = DEFAULT_URL_TIMEOUT) {
   const start = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -55,6 +56,10 @@ async function checkUrl(url, timeout = DEFAULT_TIMEOUT) {
 }
 
 async function runDiagnostics(config) {
+  const diagnosticsConfig = config.diagnostics || {};
+  const portTimeout = Number(diagnosticsConfig.portTimeoutMs) || DEFAULT_PORT_TIMEOUT;
+  const urlTimeout = Number(diagnosticsConfig.urlTimeoutMs) || DEFAULT_URL_TIMEOUT;
+
   const domains = (config.domains || []).filter(domain =>
     domain.enabled !== false && domain.name
   );
@@ -87,7 +92,7 @@ async function runDiagnostics(config) {
     services
       .filter(service => service.host && service.port)
       .map(async service => {
-        const result = await checkPort(service.host, service.port);
+        const result = await checkPort(service.host, service.port, portTimeout);
 
         return {
           name: service.name || `${service.host}:${service.port}`,
@@ -104,7 +109,7 @@ async function runDiagnostics(config) {
     services
       .filter(service => service.url)
       .map(async service => {
-        const result = await checkUrl(service.url);
+        const result = await checkUrl(service.url, urlTimeout);
 
         return {
           name: service.name || service.url,

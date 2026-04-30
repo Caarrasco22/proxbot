@@ -1,0 +1,285 @@
+# ProxBot v.1
+
+[Version en espanol](README.md)
+
+ProxBot v.1 is a configurable Discord bot for homelabs. It works as a quick Discord panel, service inventory, SSH cheat sheet, simple notes tool, and real diagnostic helper for home networks and self-hosted services.
+
+The core idea is simple: the code does not know your homelab. Services, IPs, domains, ports, SSH commands, pending tasks, and security notes live in `config.json`.
+
+## Who It Is For
+
+- Homelab users who want a Discord-based control panel.
+- People running small servers, Raspberry boards, virtualization hosts, or internal services.
+- Users learning networking, DNS, TCP ports, and basic administration.
+- Anyone who wants to document their infrastructure without hardcoding values in code.
+
+## What It Does
+
+- Provides a main Discord panel with buttons.
+- Lists services, IPs, domains, and SSH commands.
+- Runs real DNS, TCP port, and HTTP/HTTPS diagnostics.
+- Generates URL buttons from `config.json`.
+- Stores simple notes with `/log` and `/verlog`.
+- Shows installation status with `/status`.
+- Supports guided setup with `npm run setup`.
+
+## What It Is Not
+
+- It is not a replacement for Uptime Kuma, Grafana, Prometheus, or a SIEM.
+- It is not an enterprise monitoring platform.
+- It does not install or secure your self-hosted services.
+- It must not store tokens, passwords, or private keys in the repository.
+
+## Before You Install
+
+Prepare:
+
+1. A Discord account.
+2. A Discord server where you can invite bots.
+3. A Discord Developer Portal application.
+4. `DISCORD_TOKEN`.
+5. `DISCORD_CLIENT_ID`.
+6. `DISCORD_GUILD_ID`.
+7. Optional `CHANNEL_LOGS_ID`.
+8. A list of services you want to add.
+9. For each service: name, IP/host, port, URL, SSH command, local domain, and whether it should be diagnosed.
+10. Working local DNS if you use `.lab`, `.local`, or similar domains.
+11. Linux permissions if you plan to use `scripts/install.sh` or systemd.
+
+## Quick Install
+
+```bash
+git clone https://github.com/Caarrasco22/proxbot.git
+cd proxbot
+npm install
+cp .env.example .env
+npm run setup
+```
+
+On Windows PowerShell:
+
+```powershell
+copy .env.example .env
+npm.cmd install
+npm.cmd run setup
+```
+
+Manual alternative:
+
+```bash
+npm run init-config
+```
+
+Then edit `.env` and `config.json`.
+
+## Discord Developer Portal Setup
+
+1. Open [Discord Developer Portal](https://discord.com/developers/applications).
+2. Click **New Application**.
+3. Name it, for example `ProxBot`.
+4. Open the created application.
+
+### Create the Bot and Get `DISCORD_TOKEN`
+
+1. Open **Bot**.
+2. Create the bot if Discord asks for it.
+3. Copy or reset the token.
+4. Put it in `.env`:
+
+```env
+DISCORD_TOKEN=your_token
+```
+
+The token is secret. Do not share it, do not push it to GitHub, and do not paste it in screenshots.
+
+### Get `DISCORD_CLIENT_ID`
+
+1. Open **General Information**.
+2. Copy **Application ID**. In OAuth2 it may also appear as **Client ID**.
+3. Put it in `.env`:
+
+```env
+DISCORD_CLIENT_ID=your_client_id
+```
+
+### Get `DISCORD_GUILD_ID`
+
+`Guild ID` means the Discord server ID where slash commands are registered.
+
+1. In Discord, open **User Settings > Advanced**.
+2. Enable **Developer Mode**.
+3. Right-click your server.
+4. Click **Copy ID**.
+5. Put it in `.env`:
+
+```env
+DISCORD_GUILD_ID=your_guild_id
+```
+
+### Get `CHANNEL_LOGS_ID`
+
+This is optional. It lets `/log` send notes to a specific channel.
+
+```env
+CHANNEL_LOGS_ID=your_logs_channel_id
+```
+
+If you do not want it:
+
+```env
+CHANNEL_LOGS_ID=
+```
+
+### Complete `.env` Example
+
+```env
+DISCORD_TOKEN=your_token
+DISCORD_CLIENT_ID=your_client_id
+DISCORD_GUILD_ID=your_guild_id
+CHANNEL_LOGS_ID=your_logs_channel_id
+```
+
+## Invite the Bot
+
+In **OAuth2 > OAuth2 URL Generator**, select:
+
+```text
+bot
+applications.commands
+```
+
+Recommended minimum permissions:
+
+```text
+Send Messages
+Use Slash Commands
+Embed Links
+Read Message History
+```
+
+Open the generated URL and authorize the bot in your server.
+
+## Configure `config.json`
+
+Use the guided setup:
+
+```bash
+npm run setup
+```
+
+Or create it from the template:
+
+```bash
+npm run init-config
+```
+
+Then validate:
+
+```bash
+npm run check-config
+```
+
+More details: [docs/CONFIG.md](docs/CONFIG.md). Examples: [docs/examples](docs/examples).
+
+## Diagnostics
+
+`/diagnostico` and the Diagnostico panel button run the same real checks:
+
+- `domains`: DNS lookup with `dns.lookup()`.
+- `services` with `check: true`, `host`, and `port`: TCP port check.
+- `services` with `check: true` and `url`: HTTP/HTTPS check.
+
+Timeouts:
+
+```json
+"diagnostics": {
+  "portTimeoutMs": 2000,
+  "urlTimeoutMs": 5000
+}
+```
+
+## Commands
+
+- `/panel`: main panel.
+- `/status`: basic ProxBot status.
+- `/ips`: configured service hosts.
+- `/dominios`: configured domains.
+- `/ssh`: SSH cheat sheet.
+- `/diagnostico`: DNS/TCP/HTTP diagnostics.
+- `/checkdns`: check a specific domain.
+- `/checkpuerto`: check a specific TCP port.
+- `/checkurl`: check a specific URL.
+- `/log`: save a note.
+- `/verlog`: show recent notes.
+- `/seguridad`: security checklist.
+- `/pendientes`: pending tasks.
+- `/ping`: quick bot test.
+- `/servicios`: full services list.
+- `/red`: network notes.
+
+## Register Slash Commands
+
+```bash
+npm run deploy
+```
+
+## Start Locally
+
+```bash
+npm start
+```
+
+Try in Discord:
+
+```text
+/status
+/panel
+/diagnostico
+```
+
+## Debian/Ubuntu Guided Install
+
+On a clean Debian/Ubuntu server:
+
+```bash
+sudo bash scripts/install.sh
+```
+
+Full guide: [docs/INSTALL.en.md](docs/INSTALL.en.md).
+
+## Troubleshooting
+
+### The Application Did Not Respond
+
+Possible causes: bot is down, two instances use the same token, a command failed before replying, or a command took too long.
+
+### Missing Access
+
+Check that the bot was invited to the right server and that `applications.commands` was selected.
+
+### Slash Commands Do Not Appear
+
+Run `npm run deploy`, check `DISCORD_GUILD_ID`, and wait a few seconds for Discord to refresh.
+
+### Local Domains Fail
+
+The bot resolves DNS from the machine running Node.js. That machine must use your local DNS.
+
+### Cannot Find Module
+
+Run:
+
+```bash
+npm install
+```
+
+## Roadmap
+
+- v0.1.0: stable config and real diagnostics.
+- v0.2.0: guided setup, Debian/Ubuntu installer, `/status`, bilingual docs.
+- v0.3.0: alerts and configurable channels.
+- v0.4.0: web UI only if it is genuinely useful.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

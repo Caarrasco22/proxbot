@@ -50,6 +50,22 @@ Resumen de red mostrado por `/red` y por el panel:
 
 `items` es una lista libre de pares `name` y `value`.
 
+## diagnostics
+
+Timeouts usados por `/diagnostico`:
+
+```json
+{
+  "portTimeoutMs": 2000,
+  "urlTimeoutMs": 5000
+}
+```
+
+- `portTimeoutMs`: tiempo maximo para checks TCP.
+- `urlTimeoutMs`: tiempo maximo para checks HTTP/HTTPS.
+
+Si no existe esta seccion, ProxBot usa valores por defecto.
+
 ## services
 
 Lista principal de servicios:

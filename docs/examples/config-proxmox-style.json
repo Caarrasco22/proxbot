@@ -1,0 +1,70 @@
+{
+  "bot": {
+    "name": "ProxBot v.1",
+    "brand": "lab-virtualizacion",
+    "footer": "ProxBot v.1 - lab-virtualizacion",
+    "color": "0x0f4c81"
+  },
+  "network": {
+    "title": "Red del homelab",
+    "items": [
+      {
+        "name": "LAN principal",
+        "value": "192.168.1.0/24"
+      },
+      {
+        "name": "Router",
+        "value": "192.168.1.1"
+      }
+    ]
+  },
+  "diagnostics": {
+    "portTimeoutMs": 2000,
+    "urlTimeoutMs": 5000
+  },
+  "services": [
+    {
+      "name": "Host de virtualizacion",
+      "description": "Panel web de un host de virtualizacion",
+      "host": "192.168.1.10",
+      "port": 8006,
+      "url": "https://192.168.1.10:8006",
+      "enabled": true,
+      "check": true,
+      "tags": ["virtualizacion"]
+    },
+    {
+      "name": "Monitor interno",
+      "description": "Servicio de monitorizacion interno",
+      "host": "192.168.1.30",
+      "port": 3001,
+      "url": "http://monitor.local",
+      "enabled": true,
+      "check": true,
+      "tags": ["monitorizacion"]
+    }
+  ],
+  "domains": [
+    {
+      "name": "monitor.local",
+      "target": "Monitor interno",
+      "enabled": true
+    }
+  ],
+  "ssh": [
+    {
+      "name": "Host de virtualizacion",
+      "command": "ssh usuario@192.168.1.10",
+      "enabled": true
+    }
+  ],
+  "pending": [
+    "Revisar certificados internos",
+    "Probar /diagnostico desde Discord"
+  ],
+  "security": [
+    "No exponer el panel de administracion directamente a Internet",
+    "Usar VPN o red privada para administrar el homelab",
+    "Mantener copias de seguridad antes de cambios importantes"
+  ]
+}
