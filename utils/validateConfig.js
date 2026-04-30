@@ -122,6 +122,19 @@ function validateConfig(config) {
       if (service.tags && !Array.isArray(service.tags)) {
         warnings.push(`${label}.tags deberia ser un array.`);
       }
+
+      [
+        "category",
+        "categoria",
+        "owner",
+        "location",
+        "notes",
+        "notas"
+      ].forEach(field => {
+        if (service[field] !== undefined && typeof service[field] !== "string") {
+          warnings.push(`${label}.${field} deberia ser un string.`);
+        }
+      });
     });
   }
 

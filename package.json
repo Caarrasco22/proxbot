@@ -1,6 +1,6 @@
 {
   "name": "proxbot",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Bot de Discord configurable para homelabs",
   "main": "index.js",
   "type": "commonjs",

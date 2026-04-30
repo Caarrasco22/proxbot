@@ -37,6 +37,10 @@
       "port": 8006,
       "url": "https://192.168.1.10:8006",
       "ssh": "ssh usuario@192.168.1.10",
+      "category": "infraestructura",
+      "owner": "homelab",
+      "location": "rack principal",
+      "notes": "Ejemplo de nodo principal. No guardar secretos aqui.",
       "enabled": true,
       "check": true,
       "tags": ["principal"]
@@ -47,6 +51,10 @@
       "host": "192.168.1.20",
       "port": 3000,
       "url": "http://servicio.lab",
+      "category": "aplicaciones",
+      "owner": "homelab",
+      "location": "servidor principal",
+      "notes": "Ejemplo de aplicacion web interna.",
       "enabled": true,
       "check": true,
       "tags": ["web"]
@@ -57,6 +65,10 @@
       "host": "192.168.1.30",
       "port": 8080,
       "url": "http://example.lab:8080",
+      "category": "documentacion",
+      "owner": "homelab",
+      "location": "lab",
+      "notes": "Servicio visible en inventario, pero fuera de diagnosticos.",
       "enabled": true,
       "check": false,
       "tags": ["example"]
