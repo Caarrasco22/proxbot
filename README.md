@@ -1,56 +1,94 @@
 # ProxBot v.1
 
-ProxBot v.1 es un bot de Discord para homelabs. Sirve como panel, chuleta de red, listado de servicios, accesos SSH y diagnostico basico de DNS, puertos TCP y URLs.
+ProxBot v.1 es un bot de Discord para homelabs. Sirve como panel rapido, listado de servicios, chuleta SSH y herramienta de diagnostico real para redes domesticas, laboratorios y entornos de aprendizaje.
 
-El proyecto esta pensado para que cada persona lo adapte a su propio homelab sin tocar el codigo. Las IPs, dominios, puertos, servicios, comandos SSH, pendientes y checklist de seguridad viven en `config.json`.
+La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en `config.json`: servicios, IPs, dominios, puertos, comandos SSH, pendientes y checklist de seguridad.
 
-## Caracteristicas
+## Para quien es
 
-- Panel principal con botones de Discord.
-- Servicios dinamicos desde `config.json`.
-- Dominios internos desde `config.json`.
-- Chuleta SSH configurable.
-- Diagnostico real:
+- Personas que tienen un homelab y quieren verlo desde Discord.
+- Gente aprendiendo redes, DNS, puertos, servicios internos y administracion basica.
+- Usuarios que quieren documentar su laboratorio sin meter IPs a mano dentro del codigo.
+- Usuarios con servidores caseros, Raspberry, virtualizacion o servicios self-hosted.
+
+## Que hace
+
+- Muestra un panel principal con botones.
+- Lista servicios definidos en `config.json`.
+- Muestra IPs, puertos, URLs y tags.
+- Lista dominios internos.
+- Muestra comandos SSH configurados.
+- Guarda y muestra notas simples del homelab.
+- Ejecuta diagnostico real:
   - DNS con `dns.lookup()`.
   - Puertos TCP con `net.Socket`.
   - URLs HTTP/HTTPS con `fetch()`.
-- Configuracion local fuera de Git.
-- Compatible con Node.js, CommonJS, discord.js v14 y dotenv.
+- Permite botones URL dinamicos para servicios con `url`.
+
+## Que NO es
+
+- No es un sistema de monitorizacion completo.
+- No sustituye a herramientas como Uptime Kuma, Grafana o Prometheus.
+- No sustituye a un SIEM ni a una herramienta enterprise.
+- No instala servicios del homelab por ti.
+- No expone ni protege servicios sensibles por si solo.
+- No debe guardar tokens, claves privadas ni datos sensibles en el repositorio.
+
+## Requisitos
+
+- Node.js 18 o superior.
+- Un bot de Discord creado en el Developer Portal.
+- Un servidor de Discord donde registrar los comandos slash.
 
 ## Instalacion rapida
 
-1. Instala dependencias:
-
 ```bash
+git clone https://github.com/Caarrasco22/proxbot.git
+cd proxbot
 npm install
-```
-
-2. Crea tu configuracion local:
-
-```bash
-npm run init-config
 cp .env.example .env
+npm run init-config
 ```
 
-3. Edita `.env` con tus datos de Discord.
+En Windows PowerShell puedes usar:
 
-4. Edita `config.json` con tus servicios reales.
+```powershell
+copy .env.example .env
+```
 
-5. Registra comandos slash:
+## Configuracion de `.env`
+
+Edita `.env` con tus datos reales:
+
+```env
+DISCORD_CLIENT_ID=tu_client_id
+DISCORD_GUILD_ID=tu_guild_id
+DISCORD_TOKEN=tu_token
+CHANNEL_LOGS_ID=tu_canal_de_logs
+```
+
+- `DISCORD_TOKEN`: token del bot.
+- `DISCORD_CLIENT_ID`: ID de la aplicacion de Discord.
+- `DISCORD_GUILD_ID`: ID del servidor donde registrar comandos slash.
+- `CHANNEL_LOGS_ID`: canal opcional para reenviar notas de `/log`.
+
+No subas `.env` a Git. Ya esta ignorado en `.gitignore`.
+
+## Configuracion de `config.json`
+
+`npm run init-config` crea `config.json` desde `config.example.json`.
+
+Ejecuta una comprobacion basica:
 
 ```bash
-npm run deploy
+npm run check-config
 ```
 
-6. Arranca el bot:
-
-```bash
-npm start
-```
+Para entender cada seccion, mira [docs/CONFIG.md](docs/CONFIG.md).
 
 ## Como anadir servicios
 
-No anadas IPs en `index.js` ni en los comandos. Cada servicio se define en `config.json`:
+Anade servicios en `config.json`, no en `index.js` ni en los comandos:
 
 ```json
 {
@@ -65,53 +103,68 @@ No anadas IPs en `index.js` ni en los comandos. Cada servicio se define en `conf
 }
 ```
 
-Campos utiles:
+Si `check` es `true`, el servicio entra en `/diagnostico`.
 
-- `name`: nombre visible en Discord.
-- `description`: texto corto para explicar el servicio.
-- `host`: IP o hostname para checks TCP.
-- `port`: puerto TCP.
-- `url`: enlace usado en panel y check HTTP/HTTPS.
-- `enabled`: si es `false`, se oculta o ignora.
-- `check`: si es `true`, entra en `/diagnostico`.
-- `tags`: etiquetas libres para ordenar mentalmente.
+## Diagnostico
 
-## Archivos privados
+`/diagnostico` y el boton Diagnostico del panel ejecutan la misma comprobacion real:
 
-Estos archivos no deben subirse a Git:
+- `domains`: comprueba DNS con `dns.lookup()`.
+- `services` con `check: true`, `host` y `port`: comprueba puerto TCP.
+- `services` con `check: true` y `url`: comprueba HTTP/HTTPS.
 
-- `.env`
-- `config.json`
-- `logs/`
-- `node_modules/`
+Los servicios con `enabled: false` se ignoran.
 
-Usa `config.example.json` y `.env.example` como plantillas publicas.
+## Comandos disponibles
 
-## Git y publicacion
+- `/panel`: panel central con botones.
+- `/ips`: servicios con host configurado.
+- `/dominios`: dominios definidos en config.
+- `/ssh`: chuleta SSH.
+- `/diagnostico`: diagnostico DNS/TCP/HTTP.
+- `/checkdns`: comprueba un dominio concreto.
+- `/checkpuerto`: comprueba un puerto TCP concreto.
+- `/checkurl`: comprueba una URL concreta.
+- `/log`: guarda una nota.
+- `/verlog`: muestra ultimas notas.
+- `/seguridad`: checklist de seguridad.
+- `/pendientes`: lista de pendientes.
+- `/ping`: prueba rapida del bot.
+- `/servicios`: listado completo de servicios.
+- `/red`: datos de red.
 
-Consulta `docs/GIT.md` para crear el repositorio, hacer el primer commit y publicar el proyecto sin subir configuracion privada.
+## Registrar comandos slash
+
+Con `.env` configurado:
+
+```bash
+npm run deploy
+```
+
+Si Discord devuelve `Missing Access`, revisa que el bot este invitado al servidor correcto y que `DISCORD_GUILD_ID` sea el ID de ese servidor.
+
+## Arrancar en local
+
+```bash
+npm start
+```
+
+Luego usa en Discord:
+
+```text
+/panel
+/diagnostico
+/servicios
+/ips
+/dominios
+/ssh
+```
 
 ## Produccion con systemd
 
-Ejemplo de servicio:
+Hay una guia corta en [docs/SYSTEMD.md](docs/SYSTEMD.md).
 
-```ini
-[Unit]
-Description=ProxBot v.1
-After=network-online.target
-
-[Service]
-WorkingDirectory=/opt/proxbot
-ExecStart=/usr/bin/node index.js
-Restart=always
-RestartSec=5
-Environment=NODE_ENV=production
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Despues:
+Resumen:
 
 ```bash
 sudo systemctl daemon-reload
@@ -119,3 +172,70 @@ sudo systemctl enable proxbot
 sudo systemctl start proxbot
 sudo systemctl status proxbot --no-pager -l
 ```
+
+## Archivos privados
+
+No subas estos archivos:
+
+- `.env`
+- `config.json`
+- `logs/`
+- `node_modules/`
+
+Usa estas plantillas publicas:
+
+- `.env.example`
+- `config.example.json`
+
+## Capturas
+
+Pendiente de anadir capturas reales:
+
+- `docs/images/panel.png`
+- `docs/images/diagnostico.png`
+
+## Troubleshooting
+
+### La aplicacion no ha respondido
+
+Posibles causas:
+
+- El bot esta caido.
+- Hay dos instancias usando el mismo token.
+- Un comando tarda demasiado o falla antes de responder.
+- Hay un error antes de `deferReply()`.
+
+El comando `/diagnostico` y el boton del panel usan `deferReply()`, asi que si falla revisa la consola del bot y que el proceso siga vivo.
+
+### Los dominios `.local` o `.lab` fallan
+
+El bot resuelve DNS desde la maquina donde se ejecuta Node.js. Si corre en un host, VM o LXC, ese sistema debe usar tu DNS local. Comprueba tambien que el dominio existe.
+
+### Cannot find module
+
+Posibles causas: dependencias sin instalar, archivo faltante o ruta incorrecta. Primero ejecuta:
+
+```bash
+npm install
+```
+
+### Missing Access al registrar comandos
+
+Comprueba:
+
+- `DISCORD_CLIENT_ID` es el ID de la aplicacion.
+- `DISCORD_GUILD_ID` es el servidor correcto.
+- El bot esta invitado con el scope `applications.commands`.
+- El bot tiene permisos suficientes en el servidor.
+- Estas usando el token correcto.
+
+## Roadmap
+
+- v0.1.0: configuracion estable y diagnostico real.
+- v0.2.0: instalador basico.
+- v0.3.0: alertas y canales configurables.
+- v0.4.0: interfaz web solo si aporta valor real.
+
+## Licencia
+
+MIT. Consulta [LICENSE](LICENSE).

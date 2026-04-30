@@ -1,13 +1,17 @@
-﻿{
+{
   "name": "proxbot",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Bot de Discord configurable para homelabs",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "init-config": "node scripts/init-config.js",
     "start": "node index.js",
-    "deploy": "node deploy-commands.js"
+    "deploy": "node deploy-commands.js",
+    "init-config": "node scripts/init-config.js",
+    "check-config": "node scripts/check-config.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "discord.js": "^14.19.3",

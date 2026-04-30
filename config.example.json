@@ -1,8 +1,8 @@
 {
   "bot": {
     "name": "ProxBot v.1",
-    "brand": "tu-homelab",
-    "footer": "ProxBot v.1 - tu-homelab",
+    "brand": "caarrasco.dev",
+    "footer": "ProxBot v.1 - caarrasco.dev",
     "color": "0x0f4c81"
   },
   "network": {

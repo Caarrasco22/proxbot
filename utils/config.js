@@ -5,7 +5,7 @@ function loadConfig() {
   const configPath = path.join(__dirname, "..", "config.json");
 
   if (!fs.existsSync(configPath)) {
-    console.error("No existe config.json. Copia config.example.json a config.json y editalo.");
+    console.error("No existe config.json. Ejecuta npm run init-config y editalo.");
     process.exit(1);
   }
 
@@ -13,7 +13,7 @@ function loadConfig() {
     const raw = fs.readFileSync(configPath, "utf8");
     return JSON.parse(raw);
   } catch (error) {
-    console.error("Error leyendo config.json:");
+    console.error("Error leyendo o parseando config.json:");
     console.error(error.message);
     process.exit(1);
   }

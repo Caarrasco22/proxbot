@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { loadConfig } = require("../utils/config");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,14 +8,18 @@ module.exports = {
     .addStringOption(option =>
       option
         .setName("url")
-        .setDescription("URL completa, ejemplo: http://kuma.lab")
+        .setDescription("URL completa, ejemplo: http://servicio.local")
         .setRequired(true)
     ),
 
   async execute(interaction) {
+    const config = loadConfig();
     const url = interaction.options.getString("url");
 
     await interaction.deferReply();
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
 
     try {
       const start = Date.now();
@@ -22,7 +27,7 @@ module.exports = {
       const response = await fetch(url, {
         method: "GET",
         redirect: "manual",
-        signal: AbortSignal.timeout(5000)
+        signal: controller.signal
       });
 
       const ms = Date.now() - start;
@@ -37,7 +42,7 @@ module.exports = {
           { name: "Tiempo", value: `${ms} ms`, inline: true },
           { name: "Resultado", value: ok ? "Responde correctamente" : "Responde, pero revisar codigo", inline: false }
         )
-        .setFooter({ text: "ProxBot v.1 · caarrasco.dev" });
+        .setFooter({ text: config.bot?.footer || "ProxBot v.1" });
 
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
@@ -49,9 +54,11 @@ module.exports = {
           { name: "Resultado", value: "No responde", inline: true },
           { name: "Error", value: String(error.code || error.message), inline: false }
         )
-        .setFooter({ text: "ProxBot v.1 · caarrasco.dev" });
+        .setFooter({ text: config.bot?.footer || "ProxBot v.1" });
 
       await interaction.editReply({ embeds: [embed] });
+    } finally {
+      clearTimeout(timer);
     }
   }
 };

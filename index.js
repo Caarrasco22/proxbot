@@ -13,7 +13,11 @@ const {
   ButtonStyle
 } = require("discord.js");
 const { loadConfig } = require("./utils/config");
-const { runDiagnostics, diagnosticsToDescription } = require("./utils/diagnostics");
+const {
+  runDiagnostics,
+  diagnosticsToDescription,
+  diagnosticsColor
+} = require("./utils/diagnostics");
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("Falta la variable de entorno: DISCORD_TOKEN");
@@ -196,7 +200,11 @@ async function diagnosticoEmbed() {
   const config = getConfig();
   const results = await runDiagnostics(config);
 
-  return baseEmbed(config, "Diagnostico del homelab", diagnosticsToDescription(results));
+  return new EmbedBuilder()
+    .setTitle("Diagnostico del homelab")
+    .setDescription(diagnosticsToDescription(results))
+    .setColor(diagnosticsColor(results))
+    .setFooter({ text: botFooter(config) });
 }
 
 function buildButtonRows(buttons) {

@@ -17,10 +17,7 @@ module.exports = {
 
   async execute(interaction) {
     const texto = interaction.options.getString("texto");
-    const date = new Date().toLocaleString("es-ES", {
-      timeZone: "Europe/Madrid"
-    });
-
+    const date = new Date().toLocaleString("es-ES");
     const line = `[${date}] ${interaction.user.tag}: ${texto}\n`;
 
     fs.mkdirSync(path.dirname(logPath), { recursive: true });
@@ -34,7 +31,7 @@ module.exports = {
 
         if (channel) {
           await channel.send({
-            content: `📝 **Nuevo log del homelab**\n**Autor:** ${interaction.user.tag}\n**Fecha:** ${date}\n**Nota:** ${texto}`
+            content: `**Nuevo log del homelab**\n**Autor:** ${interaction.user.tag}\n**Fecha:** ${date}\n**Nota:** ${texto}`
           });
         }
       } catch (error) {
@@ -43,7 +40,7 @@ module.exports = {
     }
 
     await interaction.reply({
-      content: "Nota guardada en el log del homelab y enviada al canal de logs.",
+      content: "Nota guardada en el log del homelab.",
       ephemeral: true
     });
   }

@@ -5,23 +5,29 @@ const DEFAULT_TIMEOUT = 2500;
 
 function checkPort(host, port, timeout = DEFAULT_TIMEOUT) {
   return new Promise(resolve => {
+    const start = Date.now();
     const socket = new net.Socket();
 
-    const finish = ok => {
+    const finish = (ok, error) => {
       socket.destroy();
-      resolve(ok);
+      resolve({
+        ok,
+        ms: Date.now() - start,
+        error
+      });
     };
 
     socket.setTimeout(timeout);
     socket.once("connect", () => finish(true));
-    socket.once("timeout", () => finish(false));
-    socket.once("error", () => finish(false));
+    socket.once("timeout", () => finish(false, "timeout"));
+    socket.once("error", error => finish(false, error.code || error.message));
 
     socket.connect(port, host);
   });
 }
 
 async function checkUrl(url, timeout = DEFAULT_TIMEOUT) {
+  const start = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
 
@@ -34,11 +40,13 @@ async function checkUrl(url, timeout = DEFAULT_TIMEOUT) {
 
     return {
       ok: response.status >= 200 && response.status <= 399,
-      status: response.status
+      status: response.status,
+      ms: Date.now() - start
     };
   } catch (error) {
     return {
       ok: false,
+      ms: Date.now() - start,
       error: error.name === "AbortError" ? "timeout" : error.message
     };
   } finally {
@@ -55,7 +63,7 @@ async function runDiagnostics(config) {
     service.enabled !== false && service.check === true
   );
 
-  const dnsChecks = await Promise.all(domains.map(async domain => {
+  const dnsResults = await Promise.all(domains.map(async domain => {
     try {
       const result = await dns.lookup(domain.name);
 
@@ -75,22 +83,24 @@ async function runDiagnostics(config) {
     }
   }));
 
-  const portChecks = await Promise.all(
+  const portResults = await Promise.all(
     services
       .filter(service => service.host && service.port)
       .map(async service => {
-        const ok = await checkPort(service.host, service.port);
+        const result = await checkPort(service.host, service.port);
 
         return {
           name: service.name || `${service.host}:${service.port}`,
           host: service.host,
           port: service.port,
-          ok
+          ok: result.ok,
+          ms: result.ms,
+          error: result.error
         };
       })
   );
 
-  const urlChecks = await Promise.all(
+  const urlResults = await Promise.all(
     services
       .filter(service => service.url)
       .map(async service => {
@@ -101,65 +111,80 @@ async function runDiagnostics(config) {
           url: service.url,
           ok: result.ok,
           status: result.status,
+          ms: result.ms,
           error: result.error
         };
       })
   );
 
-  const allChecks = [...dnsChecks, ...portChecks, ...urlChecks];
-  const ok = allChecks.filter(check => check.ok).length;
-  const failed = allChecks.length - ok;
+  const allResults = [...dnsResults, ...portResults, ...urlResults];
+  const okCount = allResults.filter(result => result.ok).length;
+  const total = allResults.length;
+  const failCount = total - okCount;
 
   return {
+    dnsResults,
+    portResults,
+    urlResults,
+    okCount,
+    failCount,
+    total,
     summary: {
-      total: allChecks.length,
-      ok,
-      failed
+      total,
+      ok: okCount,
+      failed: failCount
     },
-    dns: dnsChecks,
-    ports: portChecks,
-    urls: urlChecks
+    dns: dnsResults,
+    ports: portResults,
+    urls: urlResults
   };
 }
 
 function statusIcon(ok) {
-  return ok ? "[OK]" : "[FALLO]";
+  return ok ? "OK" : "FALLO";
 }
 
 function diagnosticsToDescription(results) {
+  if (results.total === 0) {
+    return "No hay dominios ni servicios con check=true configurados en config.json.";
+  }
+
   const lines = [
-    `Resumen: ${results.summary.ok} OK - ${results.summary.failed} fallidos - ${results.summary.total} checks`
+    results.failCount === 0
+      ? `Diagnostico completado: ${results.okCount}/${results.total} checks OK.`
+      : `Diagnostico completado: ${results.okCount}/${results.total} OK, ${results.failCount} fallo(s).`
   ];
 
   lines.push("");
   lines.push("**DNS**");
-  if (results.dns.length === 0) {
+  if (results.dnsResults.length === 0) {
     lines.push("Sin dominios activos configurados.");
   } else {
-    for (const check of results.dns) {
+    for (const check of results.dnsResults) {
       const detail = check.ok ? check.address : check.error || "sin respuesta";
-      lines.push(`${statusIcon(check.ok)} ${check.name} -> ${detail}`);
+      lines.push(`[${statusIcon(check.ok)}] ${check.name} -> ${detail}`);
     }
   }
 
   lines.push("");
   lines.push("**Puertos TCP**");
-  if (results.ports.length === 0) {
+  if (results.portResults.length === 0) {
     lines.push("Sin servicios con host, port y check=true.");
   } else {
-    for (const check of results.ports) {
-      lines.push(`${statusIcon(check.ok)} ${check.name} ${check.host}:${check.port}`);
+    for (const check of results.portResults) {
+      const detail = check.ok ? `${check.ms} ms` : check.error || "sin respuesta";
+      lines.push(`[${statusIcon(check.ok)}] ${check.name} ${check.host}:${check.port} -> ${detail}`);
     }
   }
 
   lines.push("");
-  lines.push("**URLs**");
-  if (results.urls.length === 0) {
+  lines.push("**URLs HTTP/HTTPS**");
+  if (results.urlResults.length === 0) {
     lines.push("Sin servicios con url y check=true.");
   } else {
-    for (const check of results.urls) {
-      const detail = check.status ? `HTTP ${check.status}` : check.error || "sin respuesta";
-      lines.push(`${statusIcon(check.ok)} ${check.name} -> ${detail}`);
+    for (const check of results.urlResults) {
+      const detail = check.status ? `HTTP ${check.status} (${check.ms} ms)` : check.error || "sin respuesta";
+      lines.push(`[${statusIcon(check.ok)}] ${check.name} -> ${detail}`);
     }
   }
 
@@ -172,9 +197,26 @@ function diagnosticsToDescription(results) {
   return `${description.slice(0, 3950)}\n\nResultado truncado por limite de Discord.`;
 }
 
+function diagnosticsColor(results) {
+  if (results.total === 0) {
+    return 0xf1c40f;
+  }
+
+  if (results.failCount === 0) {
+    return 0x2ecc71;
+  }
+
+  if (results.okCount > 0) {
+    return 0xf1c40f;
+  }
+
+  return 0xe74c3c;
+}
+
 module.exports = {
   checkPort,
   checkUrl,
   runDiagnostics,
-  diagnosticsToDescription
+  diagnosticsToDescription,
+  diagnosticsColor
 };

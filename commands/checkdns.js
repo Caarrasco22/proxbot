@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const dns = require("dns").promises;
+const { loadConfig } = require("../utils/config");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,6 +14,7 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    const config = loadConfig();
     const dominio = interaction.options.getString("dominio");
 
     await interaction.deferReply();
@@ -28,7 +30,7 @@ module.exports = {
           { name: "IP resuelta", value: result.address, inline: true },
           { name: "Familia", value: `IPv${result.family}`, inline: true }
         )
-        .setFooter({ text: "ProxBot v.1 · caarrasco.dev" });
+        .setFooter({ text: config.bot?.footer || "ProxBot v.1" });
 
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
@@ -40,7 +42,7 @@ module.exports = {
           { name: "Resultado", value: "No resuelve", inline: true },
           { name: "Error", value: String(error.code || error.message), inline: false }
         )
-        .setFooter({ text: "ProxBot v.1 · caarrasco.dev" });
+        .setFooter({ text: config.bot?.footer || "ProxBot v.1" });
 
       await interaction.editReply({ embeds: [embed] });
     }

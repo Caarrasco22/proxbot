@@ -1,6 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { loadConfig } = require("../utils/config");
-const { runDiagnostics, diagnosticsToDescription } = require("../utils/diagnostics");
+const {
+  runDiagnostics,
+  diagnosticsToDescription,
+  diagnosticsColor
+} = require("../utils/diagnostics");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,7 +20,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Diagnostico del homelab")
       .setDescription(diagnosticsToDescription(results))
-      .setColor(Number(config.bot?.color || "0x0f4c81"))
+      .setColor(diagnosticsColor(results))
       .setFooter({ text: config.bot?.footer || "ProxBot v.1" });
 
     await interaction.editReply({ embeds: [embed] });
