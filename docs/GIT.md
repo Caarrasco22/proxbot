@@ -17,6 +17,7 @@ No deben subirse:
 - `config.json`
 - `logs/`
 - `node_modules/`
+- `*.backup-*`
 - tokens de Discord
 - IPs reales si no quieres publicarlas
 

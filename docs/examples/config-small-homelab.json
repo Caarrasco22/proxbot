@@ -1,8 +1,8 @@
 {
   "bot": {
     "name": "ProxBot v.1",
-    "brand": "caarrasco.dev",
-    "footer": "ProxBot v.1 - caarrasco.dev",
+    "brand": "mi-homelab",
+    "footer": "ProxBot v.1 - mi-homelab",
     "color": "0x0f4c81"
   },
   "network": {
@@ -15,6 +15,10 @@
       {
         "name": "Router",
         "value": "192.168.1.1"
+      },
+      {
+        "name": "Red laboratorio",
+        "value": "10.0.0.0/24"
       }
     ]
   },
@@ -25,18 +29,17 @@
   "services": [
     {
       "name": "Servidor principal",
-      "description": "Servidor o nodo principal del homelab",
+      "description": "Nodo principal del homelab",
       "host": "192.168.1.10",
-      "port": 8006,
-      "url": "https://192.168.1.10:8006",
-      "ssh": "ssh usuario@192.168.1.10",
+      "port": 22,
+      "url": "http://servidor.local",
       "enabled": true,
       "check": true,
       "tags": ["principal"]
     },
     {
       "name": "Servicio web interno",
-      "description": "Ejemplo de servicio web local",
+      "description": "Aplicacion web local",
       "host": "192.168.1.20",
       "port": 3000,
       "url": "http://servicio.local",
@@ -46,6 +49,11 @@
     }
   ],
   "domains": [
+    {
+      "name": "servidor.local",
+      "target": "Servidor principal",
+      "enabled": true
+    },
     {
       "name": "servicio.local",
       "target": "Servicio web interno",
@@ -60,9 +68,8 @@
     }
   ],
   "pending": [
-    "Editar config.json con tus servicios reales",
-    "Comprobar DNS local",
-    "Probar checks de puertos"
+    "Revisar DNS local",
+    "Probar /diagnostico desde Discord"
   ],
   "security": [
     "No exponer servicios sensibles directamente a Internet",

@@ -2,6 +2,8 @@
 
 Esta guia muestra una forma simple de ejecutar ProxBot como servicio en Linux.
 
+Tambien puedes dejar que `scripts/install.sh` cree el servicio por ti en Debian/Ubuntu.
+
 ## 1. Preparar el proyecto
 
 Ejemplo usando `/opt/proxbot`:

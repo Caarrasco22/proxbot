@@ -6,6 +6,7 @@ config.json
 
 *.bak
 *.bak-*
+*.backup-*
 *.disabled
 
 npm-debug.log*
