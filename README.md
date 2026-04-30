@@ -17,6 +17,7 @@ La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en 
 
 - Panel principal en Discord con botones.
 - Listado de servicios, IPs, dominios y comandos SSH.
+- Inventario basico del homelab y ficha de servicio desde `config.json`.
 - Diagnostico real de DNS, puertos TCP y URLs HTTP/HTTPS.
 - Botones URL dinamicos desde `config.json`.
 - Notas simples con `/log` y `/verlog`.
@@ -196,6 +197,15 @@ npm run check-config
 
 Mas detalles en [docs/CONFIG.md](docs/CONFIG.md). Hay ejemplos en [docs/examples](docs/examples).
 
+## Inventario
+
+El inventario tambien esta disponible desde el boton `Inventario` de `/panel`.
+`/inventario` y `/servicio-info` muestran documentacion de servicios desde
+`config.json` en modo solo lectura. No ejecutan comandos, no hacen checks de red
+y no llaman a APIs externas.
+
+Guia completa: [docs/INVENTORY.md](docs/INVENTORY.md).
+
 ## Diagnostico
 
 `/diagnostico` y el boton Diagnostico del panel ejecutan la misma comprobacion real:
@@ -219,6 +229,8 @@ Los timeouts se pueden ajustar en `config.json`:
 - `/status`: estado basico de ProxBot.
 - `/monitor`: estado de la monitorizacion automatica.
 - `/ultimodiagnostico`: ultimo diagnostico guardado por monitoring.
+- `/inventario`: resumen filtrable del inventario del homelab.
+- `/servicio-info`: ficha detallada de un servicio.
 - `/ips`: servicios con host configurado.
 - `/dominios`: dominios definidos en config.
 - `/ssh`: chuleta SSH.
@@ -359,8 +371,9 @@ npm install
 | Version | Estado | Enfoque |
 |--------|--------|---------|
 | v0.1.0 | Publicada | Base configurable, panel y diagnostico manual |
-| v0.2.0 | Publicada estable actual | Setup guiado, instalador y `/status` |
-| v0.3.0 | En desarrollo | Monitorizacion automatica y alertas sin spam |
+| v0.2.0 | Publicada | Setup guiado, instalador y `/status` |
+| v0.3.0 | Publicada | Monitorizacion automatica y alertas sin spam |
+| v0.4.0 | En desarrollo | Inventario basico del homelab |
 
 ### v0.1.0 - Base configurable
 
@@ -408,9 +421,23 @@ Funcionalidades añadidas o en preparacion:
 - Comando `/ultimodiagnostico`.
 - Documentacion de monitorizacion en [docs/MONITORING.md](docs/MONITORING.md).
 
+### v0.4.0 - Inventario del homelab
+
+Estado: en desarrollo hasta que se publique la release.
+
+Funcionalidades añadidas o en preparacion:
+
+- Utilidad interna `utils/inventory.js`.
+- Comando `/inventario`.
+- Comando `/servicio-info`.
+- Campos opcionales de inventario en servicios: `category`, `owner`,
+  `location` y `notes`.
+- Documentacion de inventario en [docs/INVENTORY.md](docs/INVENTORY.md).
+
 ## Proximos pasos
 
-- v0.4.0: interfaz web solo si aporta valor real.
+- Mejorar el inventario con ejemplos, autocompletado y pruebas reales.
+- Valorar una interfaz web solo si aporta valor real.
 
 ## Licencia
 

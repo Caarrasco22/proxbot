@@ -17,6 +17,7 @@ The core idea is simple: the code does not know your homelab. Services, IPs, dom
 
 - Provides a main Discord panel with buttons.
 - Lists services, IPs, domains, and SSH commands.
+- Provides a basic homelab inventory and service cards from `config.json`.
 - Runs real DNS, TCP port, and HTTP/HTTPS diagnostics.
 - Generates URL buttons from `config.json`.
 - Stores simple notes with `/log` and `/verlog`.
@@ -189,6 +190,15 @@ npm run check-config
 
 More details: [docs/CONFIG.md](docs/CONFIG.md). Examples: [docs/examples](docs/examples).
 
+## Inventory
+
+The inventory is also available from the `Inventario` button in `/panel`.
+`/inventario` and `/servicio-info` show service documentation from `config.json`
+in read-only mode. They do not execute commands, do not run network checks and do
+not call external APIs.
+
+Full guide: [docs/INVENTORY.en.md](docs/INVENTORY.en.md).
+
 ## Diagnostics
 
 `/diagnostico` and the Diagnostico panel button run the same real checks:
@@ -212,6 +222,8 @@ Timeouts:
 - `/status`: basic ProxBot status.
 - `/monitor`: automatic monitoring status.
 - `/ultimodiagnostico`: latest diagnostics saved by monitoring.
+- `/inventario`: filterable homelab inventory summary.
+- `/servicio-info`: detailed service card.
 - `/ips`: configured service hosts.
 - `/dominios`: configured domains.
 - `/ssh`: SSH cheat sheet.
@@ -322,8 +334,9 @@ npm install
 | Version | Status | Focus |
 |--------|--------|-------|
 | v0.1.0 | Released | Configurable base, panel and manual diagnostics |
-| v0.2.0 | Current stable release | Guided setup, installer and `/status` |
-| v0.3.0 | In development | Automatic monitoring and no-spam alerts |
+| v0.2.0 | Released | Guided setup, installer and `/status` |
+| v0.3.0 | Released | Automatic monitoring and no-spam alerts |
+| v0.4.0 | In development | Basic homelab inventory |
 
 ### v0.1.0 - Configurable base
 
@@ -371,9 +384,23 @@ Added or planned:
 - `/ultimodiagnostico` command.
 - Monitoring documentation in [docs/MONITORING.en.md](docs/MONITORING.en.md).
 
+### v0.4.0 - Homelab inventory
+
+Status: in development until the release is published.
+
+Added or planned:
+
+- Internal `utils/inventory.js` utility.
+- `/inventario` command.
+- `/servicio-info` command.
+- Optional inventory fields in services: `category`, `owner`, `location` and
+  `notes`.
+- Inventory documentation in [docs/INVENTORY.en.md](docs/INVENTORY.en.md).
+
 ## Next Steps
 
-- v0.4.0: web UI only if it is genuinely useful.
+- Improve inventory examples, autocomplete and real-world testing.
+- Consider a web UI only if it becomes genuinely useful.
 
 ## License
 

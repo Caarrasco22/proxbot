@@ -19,6 +19,13 @@ const {
   diagnosticsColor
 } = require("./utils/diagnostics");
 const { runMonitoringCycle } = require("./utils/monitoring");
+const {
+  getActiveServices,
+  getInventorySummary,
+  getInventoryFacets,
+  formatServiceListItem,
+  truncate
+} = require("./utils/inventory");
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("Falta la variable de entorno: DISCORD_TOKEN");
@@ -208,6 +215,81 @@ async function diagnosticoEmbed() {
     .setFooter({ text: botFooter(config) });
 }
 
+function formatFacetList(items, emptyMessage) {
+  if (!items || items.length === 0) {
+    return emptyMessage;
+  }
+
+  return items
+    .slice(0, 10)
+    .map(item => `${item.name} (${item.count})`)
+    .join(", ");
+}
+
+function inventarioEmbed() {
+  const config = getConfig();
+  const services = getActiveServices(config);
+  const summary = getInventorySummary(config, services);
+  const facets = getInventoryFacets(services);
+  const visibleServices = services.slice(0, 10);
+  const embed = baseEmbed(
+    config,
+    "Inventario del homelab",
+    "Resumen de servicios documentados en config.json."
+  );
+
+  embed.addFields(
+    {
+      name: "Resumen",
+      value: [
+        `Servicios activos: ${summary.total}`,
+        `Servicios con URL: ${summary.withUrl}`,
+        `Servicios con host: ${summary.withHost}`,
+        `Servicios con puerto: ${summary.withPort}`,
+        `Servicios con check=true: ${summary.withCheck}`
+      ].join("\n"),
+      inline: false
+    },
+    {
+      name: "Categorias",
+      value: formatFacetList(facets.categories, "Sin categorias configuradas."),
+      inline: false
+    },
+    {
+      name: "Tags principales",
+      value: formatFacetList(facets.tags, "Sin tags configurados."),
+      inline: false
+    }
+  );
+
+  if (visibleServices.length === 0) {
+    embed.addFields({
+      name: "Servicios",
+      value: "No hay servicios activos configurados.",
+      inline: false
+    });
+    return embed;
+  }
+
+  for (const service of visibleServices) {
+    embed.addFields({
+      name: truncate(service.name || "Servicio sin nombre", 256),
+      value: formatServiceListItem(service),
+      inline: false
+    });
+  }
+
+  if (services.length > visibleServices.length) {
+    embed.addFields({
+      name: "Listado resumido",
+      value: `Se muestran 10 de ${services.length} servicios. Usa /inventario para ver mas o filtrar.`,
+      inline: false
+    });
+  }
+
+  return embed;
+}
+
 function buildButtonRows(buttons) {
   const rows = [];
 
@@ -223,6 +305,7 @@ function panelRows() {
   const buttons = [
     new ButtonBuilder().setCustomId("panel_accesos").setLabel("Accesos").setStyle(ButtonStyle.Primary),
     new ButtonBuilder().setCustomId("panel_red").setLabel("Red").setStyle(ButtonStyle.Primary),
+    new ButtonBuilder().setCustomId("panel_inventario").setLabel("Inventario").setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId("panel_diagnostico").setLabel("Diagnostico").setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId("panel_ssh").setLabel("SSH").setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId("panel_seguridad").setLabel("Seguridad").setStyle(ButtonStyle.Danger),
@@ -382,6 +465,7 @@ client.on(Events.InteractionCreate, async interaction => {
     const map = {
       panel_accesos: accessEmbed,
       panel_red: redEmbed,
+      panel_inventario: inventarioEmbed,
       panel_ssh: sshEmbed,
       panel_seguridad: seguridadEmbed,
       panel_pendientes: pendientesEmbed
