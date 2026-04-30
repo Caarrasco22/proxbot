@@ -46,7 +46,7 @@ async function confirm(question, defaultValue = false) {
   const answer = (await ask(`${question} ${suffix} `)).toLowerCase();
 
   if (!answer) return defaultValue;
-  return answer === "s" || answer === "si" || answer === "sí" || answer === "y" || answer === "yes";
+  return answer === "s" || answer === "si" || answer === "y" || answer === "yes";
 }
 
 async function chooseExistingFileAction(label) {

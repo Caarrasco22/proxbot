@@ -1,6 +1,6 @@
 # ProxBot v.1
 
-[Version en espanol](README.md)
+[Spanish version](README.md)
 
 ProxBot v.1 is a configurable Discord bot for homelabs. It works as a quick Discord panel, service inventory, SSH cheat sheet, simple notes tool, and real diagnostic helper for home networks and self-hosted services.
 
@@ -71,6 +71,12 @@ npm run init-config
 ```
 
 Then edit `.env` and `config.json`.
+
+### Manual Install vs Setup vs install.sh
+
+- `npm run init-config`: only copies `config.example.json` to `config.json` if it does not exist.
+- `npm run setup`: interactive assistant to create or update `.env` and `config.json` with backups.
+- `scripts/install.sh`: Debian/Ubuntu installer; installs packages, clones into `/opt/proxbot`, can run setup, deploy commands, and create systemd.
 
 ## Discord Developer Portal Setup
 

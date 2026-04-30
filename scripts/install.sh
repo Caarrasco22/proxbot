@@ -18,7 +18,7 @@ confirm() {
   answer="${answer:-$default}"
 
   case "$answer" in
-    s|S|si|SI|sí|Sí|y|Y|yes|YES) return 0 ;;
+    s|S|si|SI|y|Y|yes|YES) return 0 ;;
     *) return 1 ;;
   esac
 }

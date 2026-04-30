@@ -72,6 +72,12 @@ npm run init-config
 
 Luego edita `.env` y `config.json`.
 
+### Diferencia entre instalacion manual, setup e install.sh
+
+- `npm run init-config`: solo copia `config.example.json` a `config.json` si no existe.
+- `npm run setup`: asistente interactivo para crear o actualizar `.env` y `config.json` con backups.
+- `scripts/install.sh`: instalador para Debian/Ubuntu; instala paquetes, clona en `/opt/proxbot`, puede ejecutar setup, deploy y crear systemd.
+
 ## Crear aplicacion en Discord Developer Portal
 
 1. Entra en [Discord Developer Portal](https://discord.com/developers/applications).
