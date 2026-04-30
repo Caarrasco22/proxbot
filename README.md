@@ -34,11 +34,14 @@ La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en 
 - No expone ni protege servicios sensibles por si solo.
 - No debe guardar tokens, claves privadas ni datos sensibles en el repositorio.
 
-## Requisitos
+## Requisitos previos
 
 - Node.js 18 o superior.
-- Un bot de Discord creado en el Developer Portal.
-- Un servidor de Discord donde registrar los comandos slash.
+- Git instalado.
+- Una cuenta de Discord.
+- Un servidor de Discord propio, o un servidor donde tengas permisos para invitar bots.
+- Permisos para crear una aplicacion en Discord Developer Portal.
+- Una terminal: PowerShell, CMD, Terminal de Linux/macOS o similar.
 
 ## Instalacion rapida
 
@@ -56,14 +59,104 @@ En Windows PowerShell puedes usar:
 copy .env.example .env
 ```
 
-## Configuracion de `.env`
+Despues de esto tienes que crear la aplicacion en Discord, rellenar `.env`, editar `config.json`, registrar comandos y arrancar el bot. Las siguientes secciones van paso a paso.
 
-Edita `.env` con tus datos reales:
+## Crear aplicacion en Discord Developer Portal
+
+1. Entra en [Discord Developer Portal](https://discord.com/developers/applications).
+2. Pulsa **New Application**.
+3. Pon un nombre, por ejemplo:
+
+```text
+ProxBot
+```
+
+4. Pulsa **Create**.
+5. Entra en la aplicacion que acabas de crear.
+
+Esta aplicacion sera la base del bot. Desde ahi sacaras el token, el Client ID y el enlace para invitarlo a tu servidor.
+
+## Crear el bot y obtener `DISCORD_TOKEN`
+
+1. Dentro de tu aplicacion, entra en la seccion **Bot**.
+2. Si Discord muestra un boton para crear el bot, pulsalo.
+3. Busca la zona **Token**.
+4. Pulsa **Reset Token** o **Copy Token**, segun te aparezca.
+5. Pega el valor en `.env`:
+
+```env
+DISCORD_TOKEN=tu_token
+```
+
+El token es secreto. No lo compartas, no lo subas a GitHub y no lo pegues en capturas. Si se filtra, vuelve a Discord Developer Portal y resetealo.
+
+## Obtener `DISCORD_CLIENT_ID`
+
+1. En Discord Developer Portal, entra en **General Information**.
+2. Copia el valor llamado **Application ID**.
+3. En algunas pantallas tambien puede aparecer como **Client ID**, especialmente en OAuth2.
+4. Pegalo en `.env`:
 
 ```env
 DISCORD_CLIENT_ID=tu_client_id
+```
+
+Ese ID identifica la aplicacion de Discord, no tu usuario.
+
+## Obtener `DISCORD_GUILD_ID`
+
+`Guild ID` significa ID del servidor de Discord donde se registran los comandos slash.
+
+Primero activa el modo desarrollador:
+
+1. Abre Discord.
+2. Ve a **Ajustes de usuario**.
+3. Entra en **Avanzado**.
+4. Activa **Modo desarrollador**.
+
+Luego copia el ID del servidor:
+
+1. Vuelve a tu servidor de Discord.
+2. Haz clic derecho sobre el nombre o icono del servidor.
+3. Pulsa **Copiar ID**.
+4. Pegalo en `.env`:
+
+```env
 DISCORD_GUILD_ID=tu_guild_id
+```
+
+## Obtener `CHANNEL_LOGS_ID`
+
+Esta variable es opcional. Se usa para que el comando `/log` mande notas a un canal concreto.
+
+1. Crea un canal en tu servidor, por ejemplo:
+
+```text
+homelab-logs
+```
+
+2. Con el modo desarrollador activado, haz clic derecho sobre el canal.
+3. Pulsa **Copiar ID**.
+4. Pegalo en `.env`:
+
+```env
+CHANNEL_LOGS_ID=tu_canal_de_logs
+```
+
+Si no quieres usar esta funcion, puedes dejarlo vacio:
+
+```env
+CHANNEL_LOGS_ID=
+```
+
+## Configuracion de `.env`
+
+Al terminar los pasos anteriores, tu `.env` deberia tener esta forma:
+
+```env
 DISCORD_TOKEN=tu_token
+DISCORD_CLIENT_ID=tu_client_id
+DISCORD_GUILD_ID=tu_guild_id
 CHANNEL_LOGS_ID=tu_canal_de_logs
 ```
 
@@ -73,6 +166,33 @@ CHANNEL_LOGS_ID=tu_canal_de_logs
 - `CHANNEL_LOGS_ID`: canal opcional para reenviar notas de `/log`.
 
 No subas `.env` a Git. Ya esta ignorado en `.gitignore`.
+
+## Invitar el bot a tu servidor
+
+1. En Discord Developer Portal, entra en tu aplicacion.
+2. Ve a **OAuth2**.
+3. En **OAuth2 URL Generator**, marca estos scopes:
+
+```text
+bot
+applications.commands
+```
+
+4. En permisos del bot, para empezar puedes marcar permisos basicos como:
+
+```text
+Send Messages
+Use Slash Commands
+Embed Links
+Read Message History
+```
+
+5. Copia la URL generada.
+6. Abrela en el navegador.
+7. Elige tu servidor.
+8. Autoriza el bot.
+
+Si no puedes invitarlo, revisa que tienes permisos suficientes en ese servidor.
 
 ## Configuracion de `config.json`
 
