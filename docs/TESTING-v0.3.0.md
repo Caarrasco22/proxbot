@@ -11,7 +11,7 @@ Probar que la monitorizacion automatica de ProxBot funciona sin spam.
 - Tener el bot invitado al servidor.
 - Tener un canal de alertas, por ejemplo `homelab-alertas`.
 - Tener el ID del canal de alertas.
-- Estar usando una rama o build con v0.3.0.
+- Estar usando una version o build con v0.3.0.
 
 ## Configuracion recomendada para probar
 
@@ -37,7 +37,7 @@ Añade temporalmente un servicio que no deberia responder:
 {
   "name": "Servicio falso test",
   "description": "Servicio para probar alertas de ProxBot",
-  "host": "192.168.0.250",
+  "host": "192.168.1.250",
   "port": 9999,
   "enabled": true,
   "check": true,

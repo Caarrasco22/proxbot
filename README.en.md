@@ -227,6 +227,38 @@ Timeouts:
 - `/servicios`: full services list.
 - `/red`: network notes.
 
+## Screenshots
+
+### Main panel
+
+Quick view with access buttons, network info, diagnostics, SSH, security and URL services.
+
+![ProxBot main panel](docs/images/proxbot-panel.png)
+
+### Bot status
+
+Summary of ProxBot version, Node.js, platform, services, domains and active checks.
+
+![ProxBot status](docs/images/proxbot-status.png)
+
+### Manual diagnostics
+
+Output of `/diagnostico` with DNS, TCP port and URL checks.
+
+![ProxBot manual diagnostics](docs/images/proxbot-diagnostics.png)
+
+### Automatic monitoring
+
+Output of `/monitor` with automatic monitoring status, saved checks and latest diagnostics.
+
+![ProxBot automatic monitoring](docs/images/proxbot-monitoring.png)
+
+### Latest saved diagnostics
+
+Output of `/ultimodiagnostico` with failures grouped by DNS, TCP and URLs.
+
+![ProxBot latest saved diagnostics](docs/images/proxbot-last-diagnostics.png)
+
 ## Register Slash Commands
 
 ```bash
@@ -290,7 +322,7 @@ npm install
 | Version | Status | Focus |
 |--------|--------|-------|
 | v0.1.0 | Released | Configurable base, panel and manual diagnostics |
-| v0.2.0 | Released | Guided setup, installer and `/status` |
+| v0.2.0 | Current stable release | Guided setup, installer and `/status` |
 | v0.3.0 | In development | Automatic monitoring and no-spam alerts |
 
 ### v0.1.0 - Configurable base

@@ -1,8 +1,8 @@
 {
   "bot": {
     "name": "ProxBot v.1",
-    "brand": "lab-virtualizacion",
-    "footer": "ProxBot v.1 - lab-virtualizacion",
+    "brand": "virtualization-lab",
+    "footer": "ProxBot v.1 - virtualization-lab",
     "color": "0x0f4c81"
   },
   "network": {
@@ -15,6 +15,10 @@
       {
         "name": "Router",
         "value": "192.168.1.1"
+      },
+      {
+        "name": "Red de laboratorio",
+        "value": "10.0.0.0/24"
       }
     ]
   },
@@ -22,48 +26,81 @@
     "portTimeoutMs": 2000,
     "urlTimeoutMs": 5000
   },
+  "monitoring": {
+    "enabled": false,
+    "intervalMinutes": 5,
+    "alertChannelId": "",
+    "notifyOnlyOnChange": true,
+    "runOnStartup": false
+  },
   "services": [
     {
-      "name": "Host de virtualizacion",
-      "description": "Panel web de un host de virtualizacion",
+      "name": "Proxmox example",
+      "description": "Ejemplo de panel de virtualizacion estilo Proxmox",
       "host": "192.168.1.10",
       "port": 8006,
-      "url": "https://192.168.1.10:8006",
+      "url": "https://proxmox.lab:8006",
       "enabled": true,
       "check": true,
       "tags": ["virtualizacion"]
     },
     {
-      "name": "Monitor interno",
-      "description": "Servicio de monitorizacion interno",
+      "name": "Kuma example",
+      "description": "Ejemplo de panel de monitorizacion interno",
       "host": "192.168.1.30",
       "port": 3001,
-      "url": "http://monitor.local",
+      "url": "http://kuma.lab:3001",
       "enabled": true,
       "check": true,
       "tags": ["monitorizacion"]
+    },
+    {
+      "name": "Panel de laboratorio",
+      "description": "Ejemplo visible sin diagnostico automatico",
+      "host": "10.0.0.20",
+      "port": 8080,
+      "url": "http://example.lab:8080",
+      "enabled": true,
+      "check": false,
+      "tags": ["lab"]
     }
   ],
   "domains": [
     {
-      "name": "monitor.local",
-      "target": "Monitor interno",
+      "name": "proxmox.lab",
+      "target": "Proxmox example",
       "enabled": true
+    },
+    {
+      "name": "kuma.lab",
+      "target": "Kuma example",
+      "enabled": true
+    },
+    {
+      "name": "example.lab",
+      "target": "Panel de laboratorio",
+      "enabled": false
     }
   ],
   "ssh": [
     {
-      "name": "Host de virtualizacion",
+      "name": "Proxmox example",
       "command": "ssh usuario@192.168.1.10",
+      "enabled": true
+    },
+    {
+      "name": "Servidor laboratorio",
+      "command": "ssh usuario@10.0.0.20",
       "enabled": true
     }
   ],
   "pending": [
     "Revisar certificados internos",
-    "Probar /diagnostico desde Discord"
+    "Probar /diagnostico desde Discord",
+    "Probar /monitor antes de activar alertas en serio"
   ],
   "security": [
-    "No exponer el panel de administracion directamente a Internet",
+    "No exponer paneles de administracion directamente a Internet",
     "Usar VPN o red privada para administrar el homelab",
     "Mantener copias de seguridad antes de cambios importantes"
   ]

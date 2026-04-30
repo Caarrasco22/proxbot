@@ -1,8 +1,8 @@
 {
   "bot": {
     "name": "ProxBot v.1",
-    "brand": "mi-homelab",
-    "footer": "ProxBot v.1 - mi-homelab",
+    "brand": "example-homelab",
+    "footer": "ProxBot v.1 - example-homelab",
     "color": "0x0f4c81"
   },
   "network": {
@@ -26,38 +26,58 @@
     "portTimeoutMs": 2000,
     "urlTimeoutMs": 5000
   },
+  "monitoring": {
+    "enabled": false,
+    "intervalMinutes": 5,
+    "alertChannelId": "",
+    "notifyOnlyOnChange": true,
+    "runOnStartup": false
+  },
   "services": [
     {
       "name": "Servidor principal",
-      "description": "Nodo principal del homelab",
+      "description": "Nodo principal del homelab de ejemplo",
       "host": "192.168.1.10",
       "port": 22,
-      "url": "http://servidor.local",
+      "url": "http://server.lab",
       "enabled": true,
       "check": true,
       "tags": ["principal"]
     },
     {
       "name": "Servicio web interno",
-      "description": "Aplicacion web local",
+      "description": "Aplicacion web local de ejemplo",
       "host": "192.168.1.20",
       "port": 3000,
-      "url": "http://servicio.local",
+      "url": "http://app.lab",
       "enabled": true,
       "check": true,
       "tags": ["web"]
+    },
+    {
+      "name": "Panel no diagnosticado",
+      "description": "Servicio visible en el panel, pero fuera de checks",
+      "url": "http://example.lab",
+      "enabled": true,
+      "check": false,
+      "tags": ["example"]
     }
   ],
   "domains": [
     {
-      "name": "servidor.local",
+      "name": "server.lab",
       "target": "Servidor principal",
       "enabled": true
     },
     {
-      "name": "servicio.local",
+      "name": "app.lab",
       "target": "Servicio web interno",
       "enabled": true
+    },
+    {
+      "name": "example.lab",
+      "target": "Panel no diagnosticado",
+      "enabled": false
     }
   ],
   "ssh": [
@@ -69,7 +89,8 @@
   ],
   "pending": [
     "Revisar DNS local",
-    "Probar /diagnostico desde Discord"
+    "Probar /diagnostico desde Discord",
+    "Activar monitoring solo cuando el canal de alertas este preparado"
   ],
   "security": [
     "No exponer servicios sensibles directamente a Internet",
