@@ -22,6 +22,13 @@
     "portTimeoutMs": 2000,
     "urlTimeoutMs": 5000
   },
+  "monitoring": {
+    "enabled": false,
+    "intervalMinutes": 5,
+    "alertChannelId": "",
+    "notifyOnlyOnChange": true,
+    "runOnStartup": false
+  },
   "services": [
     {
       "name": "Servidor principal",
@@ -39,17 +46,32 @@
       "description": "Ejemplo de servicio web local",
       "host": "192.168.1.20",
       "port": 3000,
-      "url": "http://servicio.local",
+      "url": "http://servicio.lab",
       "enabled": true,
       "check": true,
       "tags": ["web"]
+    },
+    {
+      "name": "Panel informativo",
+      "description": "Ejemplo de servicio visible pero no incluido en diagnosticos",
+      "host": "192.168.1.30",
+      "port": 8080,
+      "url": "http://example.lab:8080",
+      "enabled": true,
+      "check": false,
+      "tags": ["example"]
     }
   ],
   "domains": [
     {
-      "name": "servicio.local",
+      "name": "servicio.lab",
       "target": "Servicio web interno",
       "enabled": true
+    },
+    {
+      "name": "example.lab",
+      "target": "Panel informativo",
+      "enabled": false
     }
   ],
   "ssh": [

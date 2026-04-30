@@ -66,6 +66,31 @@ Timeouts usados por `/diagnostico`:
 
 Si no existe esta seccion, ProxBot usa valores por defecto.
 
+## monitoring
+
+Configuracion prevista para la monitorizacion automatica:
+
+```json
+{
+  "enabled": false,
+  "intervalMinutes": 5,
+  "alertChannelId": "",
+  "notifyOnlyOnChange": true,
+  "runOnStartup": false
+}
+```
+
+- `enabled`: activa o desactiva la monitorizacion automatica.
+- `intervalMinutes`: cada cuantos minutos se ejecutaran las comprobaciones.
+- `alertChannelId`: ID del canal de Discord donde se enviaran alertas.
+- `notifyOnlyOnChange`: evita spam avisando solo cuando un check cambia de estado.
+- `runOnStartup`: ejecuta una primera comprobacion al arrancar el bot.
+
+Esta seccion prepara la monitorizacion automatica de v0.3.0. No sustituye a
+`/diagnostico`: `/diagnostico` es una comprobacion manual bajo demanda, mientras
+que `monitoring` esta pensado para comprobaciones programadas. Para evitar spam,
+se recomienda mantener `notifyOnlyOnChange` en `true`.
+
 ## services
 
 Lista principal de servicios:

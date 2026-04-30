@@ -21,6 +21,8 @@ The core idea is simple: the code does not know your homelab. Services, IPs, dom
 - Generates URL buttons from `config.json`.
 - Stores simple notes with `/log` and `/verlog`.
 - Shows installation status with `/status`.
+- Shows automatic monitoring status with `/monitor`.
+- Shows the latest saved diagnostics with `/ultimodiagnostico`.
 - Supports guided setup with `npm run setup`.
 
 ## What It Is Not
@@ -208,6 +210,8 @@ Timeouts:
 
 - `/panel`: main panel.
 - `/status`: basic ProxBot status.
+- `/monitor`: automatic monitoring status.
+- `/ultimodiagnostico`: latest diagnostics saved by monitoring.
 - `/ips`: configured service hosts.
 - `/dominios`: configured domains.
 - `/ssh`: SSH cheat sheet.
@@ -222,6 +226,38 @@ Timeouts:
 - `/ping`: quick bot test.
 - `/servicios`: full services list.
 - `/red`: network notes.
+
+## Screenshots
+
+### Main panel
+
+Quick view with access buttons, network info, diagnostics, SSH, security and URL services.
+
+![ProxBot main panel](docs/images/proxbot-panel.png)
+
+### Bot status
+
+Summary of ProxBot version, Node.js, platform, services, domains and active checks.
+
+![ProxBot status](docs/images/proxbot-status.png)
+
+### Manual diagnostics
+
+Output of `/diagnostico` with DNS, TCP port and URL checks.
+
+![ProxBot manual diagnostics](docs/images/proxbot-diagnostics.png)
+
+### Automatic monitoring
+
+Output of `/monitor` with automatic monitoring status, saved checks and latest diagnostics.
+
+![ProxBot automatic monitoring](docs/images/proxbot-monitoring.png)
+
+### Latest saved diagnostics
+
+Output of `/ultimodiagnostico` with failures grouped by DNS, TCP and URLs.
+
+![ProxBot latest saved diagnostics](docs/images/proxbot-last-diagnostics.png)
 
 ## Register Slash Commands
 
@@ -239,6 +275,8 @@ Try in Discord:
 
 ```text
 /status
+/monitor
+/ultimodiagnostico
 /panel
 /diagnostico
 ```
@@ -279,11 +317,62 @@ Run:
 npm install
 ```
 
-## Roadmap
+## Project Versions
 
-- v0.1.0: stable config and real diagnostics.
-- v0.2.0: guided setup, Debian/Ubuntu installer, `/status`, bilingual docs.
-- v0.3.0: alerts and configurable channels.
+| Version | Status | Focus |
+|--------|--------|-------|
+| v0.1.0 | Released | Configurable base, panel and manual diagnostics |
+| v0.2.0 | Current stable release | Guided setup, installer and `/status` |
+| v0.3.0 | In development | Automatic monitoring and no-spam alerts |
+
+### v0.1.0 - Configurable base
+
+Added:
+
+- Functional Discord bot with slash commands.
+- `config.json` based configuration.
+- Public `config.example.json` template.
+- Main `/panel`.
+- Commands for services, IPs, domains, SSH, network, pending items and security.
+- Manual diagnostics with `/diagnostico`.
+- Manual checks with `/checkdns`, `/checkpuerto` and `/checkurl`.
+- Notes/logging with `/log` and `/verlog`.
+- Initial documentation.
+- MIT License.
+
+### v0.2.0 - Guided installation and documentation
+
+Added:
+
+- `npm run setup` for guided `.env` and `config.json` creation.
+- `scripts/install.sh` for Debian/Ubuntu installation.
+- `/status` command.
+- Configurable diagnostics timeouts.
+- Spanish/English documentation.
+- `README.en.md`.
+- `docs/INSTALL.md` and `docs/INSTALL.en.md`.
+- `config.json` examples.
+- systemd and Git guides.
+- Release notes.
+
+### v0.3.0 - Automatic monitoring
+
+Status: in development until the release is published.
+
+Added or planned:
+
+- `monitoring` section in `config.json`.
+- Internal monitoring engine.
+- Local `data/status-cache.json` and `data/last-diagnostics.json` files.
+- Alerts when a check changes from OK to failed.
+- Recovery alerts when a check returns to OK.
+- Anti-spam behavior with `notifyOnlyOnChange`.
+- `/monitor` command.
+- `/ultimodiagnostico` command.
+- Monitoring documentation in [docs/MONITORING.en.md](docs/MONITORING.en.md).
+
+## Next Steps
+
 - v0.4.0: web UI only if it is genuinely useful.
 
 ## License

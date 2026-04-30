@@ -21,6 +21,8 @@ La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en 
 - Botones URL dinamicos desde `config.json`.
 - Notas simples con `/log` y `/verlog`.
 - Comando `/status` con informacion basica de instalacion.
+- Comando `/monitor` para consultar el estado de la monitorizacion automatica.
+- Comando `/ultimodiagnostico` para revisar el ultimo diagnostico guardado.
 - Instalacion manual o setup guiado con `npm run setup`.
 
 ## Que NO es
@@ -215,6 +217,8 @@ Los timeouts se pueden ajustar en `config.json`:
 
 - `/panel`: panel central.
 - `/status`: estado basico de ProxBot.
+- `/monitor`: estado de la monitorizacion automatica.
+- `/ultimodiagnostico`: ultimo diagnostico guardado por monitoring.
 - `/ips`: servicios con host configurado.
 - `/dominios`: dominios definidos en config.
 - `/ssh`: chuleta SSH.
@@ -229,6 +233,38 @@ Los timeouts se pueden ajustar en `config.json`:
 - `/ping`: prueba rapida.
 - `/servicios`: listado completo de servicios.
 - `/red`: datos de red.
+
+## Capturas
+
+### Panel principal
+
+Vista rapida con accesos, red, diagnostico, SSH, seguridad y servicios con URL.
+
+![Panel principal de ProxBot](docs/images/proxbot-panel.png)
+
+### Estado del bot
+
+Resumen de version, Node.js, plataforma, servicios, dominios y checks activos.
+
+![Estado de ProxBot](docs/images/proxbot-status.png)
+
+### Diagnostico manual
+
+Resultado de `/diagnostico` con comprobaciones DNS, puertos TCP y URLs.
+
+![Diagnostico manual de ProxBot](docs/images/proxbot-diagnostics.png)
+
+### Monitorizacion automatica
+
+Resultado de `/monitor` con el estado de la monitorizacion automatica, checks guardados y ultimo diagnostico.
+
+![Monitorizacion automatica de ProxBot](docs/images/proxbot-monitoring.png)
+
+### Ultimo diagnostico guardado
+
+Resultado de `/ultimodiagnostico` con fallos agrupados por DNS, TCP y URLs.
+
+![Ultimo diagnostico guardado de ProxBot](docs/images/proxbot-last-diagnostics.png)
 
 ## Registrar comandos slash
 
@@ -254,6 +290,8 @@ Prueba en Discord:
 
 ```text
 /status
+/monitor
+/ultimodiagnostico
 /panel
 /diagnostico
 ```
@@ -290,13 +328,6 @@ No subas:
 - `node_modules/`
 - backups `*.backup-*`
 
-## Capturas
-
-Pendiente de anadir capturas reales:
-
-- `docs/images/panel.png`
-- `docs/images/diagnostico.png`
-
 ## Troubleshooting
 
 ### La aplicacion no ha respondido
@@ -323,11 +354,62 @@ Ejecuta:
 npm install
 ```
 
-## Roadmap
+## Versiones del proyecto
 
-- v0.1.0: configuracion estable y diagnostico real.
-- v0.2.0: setup guiado, instalador Debian/Ubuntu, `/status` y docs bilingues.
-- v0.3.0: alertas y canales configurables.
+| Version | Estado | Enfoque |
+|--------|--------|---------|
+| v0.1.0 | Publicada | Base configurable, panel y diagnostico manual |
+| v0.2.0 | Publicada estable actual | Setup guiado, instalador y `/status` |
+| v0.3.0 | En desarrollo | Monitorizacion automatica y alertas sin spam |
+
+### v0.1.0 - Base configurable
+
+Funcionalidades añadidas:
+
+- Bot de Discord funcional con comandos slash.
+- Configuracion mediante `config.json`.
+- Plantilla publica `config.example.json`.
+- Panel principal con `/panel`.
+- Comandos para servicios, IPs, dominios, SSH, red, pendientes y seguridad.
+- Diagnostico manual con `/diagnostico`.
+- Checks manuales con `/checkdns`, `/checkpuerto` y `/checkurl`.
+- Logs/notas con `/log` y `/verlog`.
+- Documentacion inicial.
+- Licencia MIT.
+
+### v0.2.0 - Instalacion guiada y documentacion
+
+Funcionalidades añadidas:
+
+- `npm run setup` para crear `.env` y `config.json` de forma guiada.
+- `scripts/install.sh` para instalacion en Debian/Ubuntu.
+- Comando `/status`.
+- Timeouts configurables para diagnostico.
+- Documentacion bilingue espanol/ingles.
+- `README.en.md`.
+- `docs/INSTALL.md` y `docs/INSTALL.en.md`.
+- Ejemplos de `config.json`.
+- Guias de systemd y Git.
+- Release notes.
+
+### v0.3.0 - Monitorizacion automatica
+
+Estado: en desarrollo hasta que se publique la release.
+
+Funcionalidades añadidas o en preparacion:
+
+- Seccion `monitoring` en `config.json`.
+- Motor interno de monitorizacion.
+- Archivos locales `data/status-cache.json` y `data/last-diagnostics.json`.
+- Alertas automaticas cuando un check pasa de OK a fallo.
+- Alertas de recuperacion cuando un check vuelve a OK.
+- Proteccion anti-spam con `notifyOnlyOnChange`.
+- Comando `/monitor`.
+- Comando `/ultimodiagnostico`.
+- Documentacion de monitorizacion en [docs/MONITORING.md](docs/MONITORING.md).
+
+## Proximos pasos
+
 - v0.4.0: interfaz web solo si aporta valor real.
 
 ## Licencia

@@ -52,6 +52,50 @@ function validateConfig(config) {
     }
   }
 
+  if (config.monitoring !== undefined) {
+    if (!config.monitoring || typeof config.monitoring !== "object" || Array.isArray(config.monitoring)) {
+      warnings.push("`monitoring` deberia ser un objeto.");
+    } else {
+      if (
+        config.monitoring.enabled !== undefined &&
+        typeof config.monitoring.enabled !== "boolean"
+      ) {
+        warnings.push("`monitoring.enabled` deberia ser boolean.");
+      }
+
+      if (
+        config.monitoring.intervalMinutes !== undefined &&
+        (
+          typeof config.monitoring.intervalMinutes !== "number" ||
+          config.monitoring.intervalMinutes < 1
+        )
+      ) {
+        warnings.push("`monitoring.intervalMinutes` deberia ser un numero mayor o igual a 1.");
+      }
+
+      if (
+        config.monitoring.alertChannelId !== undefined &&
+        typeof config.monitoring.alertChannelId !== "string"
+      ) {
+        warnings.push("`monitoring.alertChannelId` deberia ser string.");
+      }
+
+      if (
+        config.monitoring.notifyOnlyOnChange !== undefined &&
+        typeof config.monitoring.notifyOnlyOnChange !== "boolean"
+      ) {
+        warnings.push("`monitoring.notifyOnlyOnChange` deberia ser boolean.");
+      }
+
+      if (
+        config.monitoring.runOnStartup !== undefined &&
+        typeof config.monitoring.runOnStartup !== "boolean"
+      ) {
+        warnings.push("`monitoring.runOnStartup` deberia ser boolean.");
+      }
+    }
+  }
+
   if (!Array.isArray(config.services)) {
     errors.push("`services` debe ser un array.");
   } else {

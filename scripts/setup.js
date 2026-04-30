@@ -217,6 +217,13 @@ async function createConfig() {
       portTimeoutMs: 2000,
       urlTimeoutMs: 5000
     },
+    monitoring: {
+      enabled: false,
+      intervalMinutes: 5,
+      alertChannelId: "",
+      notifyOnlyOnChange: true,
+      runOnStartup: false
+    },
     services,
     domains,
     ssh,
