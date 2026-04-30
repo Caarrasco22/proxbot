@@ -64,6 +64,9 @@ To enable automatic monitoring:
 `runOnStartup` runs an initial check when the bot connects. If you do not want
 that immediate first cycle, keep it set to `false`.
 
+For a practical monitoring test flow, see
+[docs/TESTING-v0.3.0.md](TESTING-v0.3.0.md).
+
 ## How spam is avoided
 
 The recommended option is:
@@ -145,12 +148,14 @@ The snapshot saved in `status-cache.json` contains a simple list of checks:
 
 Detected changes can be:
 
-- `NEW`: new check.
+- `NEW`: new check that is OK.
 - `FAILED`: check changed from OK to FAIL.
 - `RECOVERED`: check changed from FAIL to OK.
 - `REMOVED`: check no longer exists in the configuration.
 
-Future alerts will mainly use `FAILED` and `RECOVERED`.
+Alerts mainly use `FAILED` and `RECOVERED`. If a new check already starts as
+failing, it is also treated as `FAILED` so it is visible during tests and initial
+startup checks.
 
 ## Current alerts
 

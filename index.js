@@ -254,7 +254,7 @@ function monitoringIntervalMinutes(config) {
 function formatMonitoringAlert(change) {
   if (change.type === "FAILED") {
     return {
-      title: "⚠️ Servicio con fallo",
+      title: "Servicio con fallo",
       color: 0xe74c3c,
       description: [
         `**Nombre:** ${change.name}`,
@@ -268,7 +268,7 @@ function formatMonitoringAlert(change) {
 
   if (change.type === "RECOVERED") {
     return {
-      title: "✅ Servicio recuperado",
+      title: "Servicio recuperado",
       color: 0x2ecc71,
       description: [
         `**Nombre:** ${change.name}`,

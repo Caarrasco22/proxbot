@@ -64,6 +64,9 @@ Para activar la monitorizacion automatica:
 `runOnStartup` permite ejecutar una primera comprobacion cuando el bot se
 conecta. Si no quieres ese primer ciclo inmediato, dejalo como `false`.
 
+Para probar la monitorizacion automatica antes de usarla en serio, consulta
+[docs/TESTING-v0.3.0.md](TESTING-v0.3.0.md).
+
 ## Como evitar spam
 
 La opcion recomendada es:
@@ -145,12 +148,14 @@ El snapshot guardado en `status-cache.json` contiene una lista simple de checks:
 
 Los cambios detectados pueden ser:
 
-- `NEW`: check nuevo.
+- `NEW`: check nuevo que entra OK.
 - `FAILED`: check que pasa de OK a FALLO.
 - `RECOVERED`: check que pasa de FALLO a OK.
 - `REMOVED`: check que ya no existe en la configuracion.
 
-Las futuras alertas usaran principalmente `FAILED` y `RECOVERED`.
+Las alertas usan principalmente `FAILED` y `RECOVERED`. Si un check nuevo ya
+nace fallando, tambien se trata como `FAILED` para que sea visible en pruebas y
+arranques iniciales.
 
 ## Alertas actuales
 

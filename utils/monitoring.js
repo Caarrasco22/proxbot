@@ -130,7 +130,7 @@ function diffMonitoringStates(previousState, currentState) {
     const previousCheck = previousChecks.get(checkId);
 
     if (!previousCheck) {
-      changes.push(buildChange("NEW", null, currentCheck, timestamp));
+      changes.push(buildChange(currentCheck.ok === false ? "FAILED" : "NEW", null, currentCheck, timestamp));
       continue;
     }
 
