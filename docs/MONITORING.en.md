@@ -46,6 +46,24 @@ The planned `config.json` section is:
 
 For safety, `enabled` is set to `false` in `config.example.json`.
 
+To enable automatic monitoring:
+
+```json
+{
+  "monitoring": {
+    "enabled": true,
+    "intervalMinutes": 5,
+    "alertChannelId": "123456789012345678",
+    "notifyOnlyOnChange": true,
+    "runOnStartup": true
+  }
+}
+```
+
+`alertChannelId` must point to a channel where the bot can send messages.
+`runOnStartup` runs an initial check when the bot connects. If you do not want
+that immediate first cycle, keep it set to `false`.
+
 ## How spam is avoided
 
 The recommended option is:
@@ -134,9 +152,23 @@ Detected changes can be:
 
 Future alerts will mainly use `FAILED` and `RECOVERED`.
 
+## Current alerts
+
+The current integration sends Discord alerts only for:
+
+- `FAILED`: a check that was previously OK now fails.
+- `RECOVERED`: a check that was previously failing is now OK.
+
+`NEW` and `REMOVED` are detected internally, but they are not notified by
+default.
+
+Even when `notifyOnlyOnChange` is `false`, ProxBot does not send periodic
+summaries yet. The current behavior remains safe: only failure and recovery
+changes are notified to avoid spam.
+
 ## Current limitations
 
-- The engine saves local state, but it does not send real Discord alerts yet.
+- No periodic summaries are sent.
 - It does not replace Uptime Kuma, Grafana or Prometheus.
 - No web GUI.
 - No database.
@@ -145,5 +177,4 @@ Future alerts will mainly use `FAILED` and `RECOVERED`.
 
 ## Next v0.3.0 steps
 
-- Send alerts only to the configured channel.
 - Add query commands such as `/monitor` and `/ultimodiagnostico`.
