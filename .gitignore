@@ -3,6 +3,7 @@ logs/
 
 .env
 config.json
+proxmox_config.json
 
 *.bak
 *.bak-*
