@@ -55,8 +55,8 @@ La opcion recomendada es:
 ```
 
 Con esta opcion, ProxBot solo deberia avisar cuando un check cambie de OK a
-FALLO o de FALLO a OK. Si un servicio sigue caido durante varias rondas, no
-deberia enviar el mismo aviso una y otra vez.
+FALLO (`FAILED`) o de FALLO a OK (`RECOVERED`). Si un servicio sigue caido
+durante varias rondas, no deberia enviar el mismo aviso una y otra vez.
 
 ## Canal de alertas
 
@@ -86,18 +86,57 @@ el ID del canal.
 }
 ```
 
-## Archivos internos previstos
+## Archivos locales generados
 
-En futuras fases de v0.3.0 se preve usar archivos locales para recordar estado:
+El motor base de monitorizacion usa archivos JSON locales para recordar estado:
 
 - `data/status-cache.json`: estado anterior de los checks para detectar cambios.
 - `data/last-diagnostics.json`: ultimo resultado de diagnostico guardado.
+- `data/.gitkeep`: archivo vacio para conservar la carpeta `data/` en Git.
 
-Estos archivos seran locales y no deberian subirse a Git.
+`status-cache.json` y `last-diagnostics.json` se generan automaticamente y no
+deben subirse a Git. Solo `data/.gitkeep` forma parte del repositorio.
+
+El snapshot guardado en `status-cache.json` contiene una lista simple de checks:
+
+```json
+{
+  "timestamp": "2026-01-01T10:00:00.000Z",
+  "checks": [
+    {
+      "id": "tcp:Servicio web interno:192.168.1.20:3000",
+      "type": "tcp",
+      "name": "Servicio web interno",
+      "ok": true,
+      "message": "Servicio web interno -> 192.168.1.20:3000 23 ms"
+    }
+  ]
+}
+```
+
+`last-diagnostics.json` conserva el ultimo resultado completo del ciclo:
+
+```json
+{
+  "timestamp": "2026-01-01T10:00:00.000Z",
+  "results": {},
+  "currentState": {},
+  "changes": []
+}
+```
+
+Los cambios detectados pueden ser:
+
+- `NEW`: check nuevo.
+- `FAILED`: check que pasa de OK a FALLO.
+- `RECOVERED`: check que pasa de FALLO a OK.
+- `REMOVED`: check que ya no existe en la configuracion.
+
+Las futuras alertas usaran principalmente `FAILED` y `RECOVERED`.
 
 ## Limitaciones actuales
 
-- Esta fase no envia alertas reales todavia.
+- El motor guarda estado local, pero todavia no envia alertas reales a Discord.
 - No sustituye a Uptime Kuma, Grafana ni Prometheus.
 - No incluye GUI web.
 - No usa base de datos.
@@ -106,8 +145,5 @@ Estos archivos seran locales y no deberian subirse a Git.
 
 ## Proximos pasos de v0.3.0
 
-- Crear `utils/monitoring.js`.
-- Reutilizar `runDiagnostics(config)` para las comprobaciones programadas.
-- Guardar estado anterior para comparar cambios.
 - Enviar alertas solo al canal configurado.
 - Anadir comandos de consulta como `/monitor` y `/ultimodiagnostico`.

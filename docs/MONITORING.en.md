@@ -55,8 +55,8 @@ The recommended option is:
 ```
 
 With this option, ProxBot should only notify when a check changes from OK to FAIL
-or from FAIL to OK. If a service remains down for multiple rounds, it should not
-send the same alert again and again.
+(`FAILED`) or from FAIL to OK (`RECOVERED`). If a service remains down for
+multiple rounds, it should not send the same alert again and again.
 
 ## Alert channel
 
@@ -86,18 +86,57 @@ contain the channel ID.
 }
 ```
 
-## Planned internal files
+## Generated local files
 
-Later v0.3.0 steps are expected to use local files to remember state:
+The monitoring engine uses local JSON files to remember state:
 
 - `data/status-cache.json`: previous check state used to detect changes.
 - `data/last-diagnostics.json`: last saved diagnostics result.
+- `data/.gitkeep`: empty file used to keep the `data/` directory in Git.
 
-These files will be local and should not be committed to Git.
+`status-cache.json` and `last-diagnostics.json` are generated automatically and
+must not be committed to Git. Only `data/.gitkeep` belongs in the repository.
+
+The snapshot saved in `status-cache.json` contains a simple list of checks:
+
+```json
+{
+  "timestamp": "2026-01-01T10:00:00.000Z",
+  "checks": [
+    {
+      "id": "tcp:Internal web service:192.168.1.20:3000",
+      "type": "tcp",
+      "name": "Internal web service",
+      "ok": true,
+      "message": "Internal web service -> 192.168.1.20:3000 23 ms"
+    }
+  ]
+}
+```
+
+`last-diagnostics.json` stores the latest full cycle payload:
+
+```json
+{
+  "timestamp": "2026-01-01T10:00:00.000Z",
+  "results": {},
+  "currentState": {},
+  "changes": []
+}
+```
+
+Detected changes can be:
+
+- `NEW`: new check.
+- `FAILED`: check changed from OK to FAIL.
+- `RECOVERED`: check changed from FAIL to OK.
+- `REMOVED`: check no longer exists in the configuration.
+
+Future alerts will mainly use `FAILED` and `RECOVERED`.
 
 ## Current limitations
 
-- This phase does not send real alerts yet.
+- The engine saves local state, but it does not send real Discord alerts yet.
 - It does not replace Uptime Kuma, Grafana or Prometheus.
 - No web GUI.
 - No database.
@@ -106,8 +145,5 @@ These files will be local and should not be committed to Git.
 
 ## Next v0.3.0 steps
 
-- Create `utils/monitoring.js`.
-- Reuse `runDiagnostics(config)` for scheduled checks.
-- Save previous state to compare changes.
 - Send alerts only to the configured channel.
 - Add query commands such as `/monitor` and `/ultimodiagnostico`.
