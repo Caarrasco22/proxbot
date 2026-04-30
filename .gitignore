@@ -1,5 +1,7 @@
 node_modules/
 logs/
+data/status-cache.json
+data/last-diagnostics.json
 
 .env
 config.json

@@ -283,7 +283,7 @@ npm install
 
 - v0.1.0: stable config and real diagnostics.
 - v0.2.0: guided setup, Debian/Ubuntu installer, `/status`, bilingual docs.
-- v0.3.0: alerts and configurable channels.
+- v0.3.0: automatic monitoring and no-spam alerts. See [docs/MONITORING.en.md](docs/MONITORING.en.md).
 - v0.4.0: web UI only if it is genuinely useful.
 
 ## License
