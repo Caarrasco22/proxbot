@@ -391,7 +391,7 @@ npm install
 | v0.2.0 | Publicada | Setup guiado, instalador y `/status` |
 | v0.3.0 | Publicada | Monitorizacion automatica y alertas sin spam |
 | v0.4.0 | Publicada | Inventario basico del homelab |
-| v0.5.0 | En desarrollo | Instalador Proxmox/LXC |
+| v0.5.0 | Publicada | Instalador Proxmox/LXC |
 
 ### v0.1.0 - Base configurable
 
@@ -425,7 +425,7 @@ Funcionalidades añadidas:
 
 ### v0.3.0 - Monitorizacion automatica
 
-Estado: en desarrollo hasta que se publique la release.
+Estado: publicada.
 
 Funcionalidades añadidas o en preparacion:
 
@@ -441,7 +441,7 @@ Funcionalidades añadidas o en preparacion:
 
 ### v0.4.0 - Inventario del homelab
 
-Estado: en desarrollo hasta que se publique la release.
+Estado: publicada.
 
 Funcionalidades añadidas o en preparacion:
 
@@ -454,7 +454,7 @@ Funcionalidades añadidas o en preparacion:
 
 ### v0.5.0 - Instalador Proxmox/LXC
 
-Estado: en desarrollo hasta que se publique la release.
+Estado: publicada.
 
 Funcionalidades añadidas o en preparacion:
 
@@ -467,7 +467,8 @@ Funcionalidades añadidas o en preparacion:
 
 ## Proximos pasos
 
-- Probar el instalador en un host Proxmox VE real.
+- Pulir documentacion y capturas de v0.5.0.
+- Preparar v0.6.0: backups y mantenimiento documental.
 - Valorar una interfaz web solo si aporta valor real.
 
 ## Licencia

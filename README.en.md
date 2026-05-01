@@ -354,7 +354,7 @@ npm install
 | v0.2.0 | Released | Guided setup, installer and `/status` |
 | v0.3.0 | Released | Automatic monitoring and no-spam alerts |
 | v0.4.0 | Released | Basic homelab inventory |
-| v0.5.0 | In development | Proxmox/LXC installer |
+| v0.5.0 | Released | Proxmox/LXC installer |
 
 ### v0.1.0 - Configurable base
 
@@ -388,7 +388,7 @@ Added:
 
 ### v0.3.0 - Automatic monitoring
 
-Status: in development until the release is published.
+Status: released.
 
 Added or planned:
 
@@ -404,7 +404,7 @@ Added or planned:
 
 ### v0.4.0 - Homelab inventory
 
-Status: in development until the release is published.
+Status: released.
 
 Added or planned:
 
@@ -417,7 +417,7 @@ Added or planned:
 
 ### v0.5.0 - Proxmox/LXC installer
 
-Status: in development until the release is published.
+Status: released.
 
 Added or planned:
 
@@ -430,7 +430,8 @@ Added or planned:
 
 ## Next Steps
 
-- Test the installer on a real Proxmox VE host.
+- Polish v0.5.0 documentation and screenshots.
+- Prepare v0.6.0: backup and maintenance documentation.
 - Consider a web UI only if it becomes genuinely useful.
 
 ## License
