@@ -505,7 +505,7 @@ install_inside_lxc() {
   run_in_lxc "DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl git nodejs npm"
 
   local node_major
-  node_major="$(pct exec "$CT_ID" -- node -p \"Number(process.versions.node.split('.')[0])\" 2>/dev/null || echo 0)"
+  node_major="$(pct exec "$CT_ID" -- node -p 'Number(process.versions.node.split(".")[0])' 2>/dev/null || echo 0)"
 
   if [ "$node_major" -lt 18 ]; then
     warn "Node.js instalado es menor que 18. Instalando NodeSource 20.x dentro del LXC."
@@ -513,7 +513,7 @@ install_inside_lxc() {
     run_in_lxc "DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs"
   fi
 
-  node_major="$(pct exec "$CT_ID" -- node -p \"Number(process.versions.node.split('.')[0])\" 2>/dev/null || echo 0)"
+  node_major="$(pct exec "$CT_ID" -- node -p 'Number(process.versions.node.split(".")[0])' 2>/dev/null || echo 0)"
   [ "$node_major" -ge 18 ] || die "No se pudo garantizar Node.js >= 18 dentro del LXC."
 
   info "Clonando ProxBot dentro del LXC"
