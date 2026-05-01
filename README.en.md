@@ -25,6 +25,7 @@ The core idea is simple: the code does not know your homelab. Services, IPs, dom
 - Shows automatic monitoring status with `/monitor`.
 - Shows the latest saved diagnostics with `/ultimodiagnostico`.
 - Supports guided setup with `npm run setup`.
+- Includes an optional Proxmox VE installer for deploying ProxBot in a Debian LXC.
 
 ## What It Is Not
 
@@ -303,6 +304,22 @@ sudo bash scripts/install.sh
 
 Full guide: [docs/INSTALL.en.md](docs/INSTALL.en.md).
 
+## Proxmox/LXC Install
+
+If you use Proxmox VE, you can create a new Debian LXC and prepare ProxBot
+inside the container with:
+
+```bash
+sudo bash scripts/proxmox-lxc-install.sh --dry-run
+sudo bash scripts/proxmox-lxc-install.sh
+```
+
+Full guide: [docs/PROXMOX-LXC-INSTALL.en.md](docs/PROXMOX-LXC-INSTALL.en.md).
+Testing guide: [docs/TESTING-v0.5.0.en.md](docs/TESTING-v0.5.0.en.md).
+Use `--help` to see available options. This installer does not use the Proxmox
+API or Proxmox tokens, does not delete CTs if something fails, and does not
+start the bot by default until `.env` is configured.
+
 ## Troubleshooting
 
 ### The Application Did Not Respond
@@ -336,7 +353,8 @@ npm install
 | v0.1.0 | Released | Configurable base, panel and manual diagnostics |
 | v0.2.0 | Released | Guided setup, installer and `/status` |
 | v0.3.0 | Released | Automatic monitoring and no-spam alerts |
-| v0.4.0 | In development | Basic homelab inventory |
+| v0.4.0 | Released | Basic homelab inventory |
+| v0.5.0 | In development | Proxmox/LXC installer |
 
 ### v0.1.0 - Configurable base
 
@@ -397,9 +415,22 @@ Added or planned:
   `notes`.
 - Inventory documentation in [docs/INVENTORY.en.md](docs/INVENTORY.en.md).
 
+### v0.5.0 - Proxmox/LXC installer
+
+Status: in development until the release is published.
+
+Added or planned:
+
+- `scripts/proxmox-lxc-install.sh` script.
+- `--dry-run` mode.
+- Default and advanced modes.
+- Conservative Debian LXC creation from a Proxmox VE host.
+- ProxBot and systemd setup inside the container.
+- Documentation in [docs/PROXMOX-LXC-INSTALL.en.md](docs/PROXMOX-LXC-INSTALL.en.md).
+
 ## Next Steps
 
-- Improve inventory examples, autocomplete and real-world testing.
+- Test the installer on a real Proxmox VE host.
 - Consider a web UI only if it becomes genuinely useful.
 
 ## License

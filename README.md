@@ -25,6 +25,7 @@ La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en 
 - Comando `/monitor` para consultar el estado de la monitorizacion automatica.
 - Comando `/ultimodiagnostico` para revisar el ultimo diagnostico guardado.
 - Instalacion manual o setup guiado con `npm run setup`.
+- Instalador opcional para desplegar ProxBot en un LXC Debian desde Proxmox VE.
 
 ## Que NO es
 
@@ -318,6 +319,22 @@ sudo bash scripts/install.sh
 
 El instalador instala paquetes, clona o actualiza `/opt/proxbot`, puede ejecutar `npm run setup`, registrar comandos y crear systemd. Guia completa: [docs/INSTALL.md](docs/INSTALL.md).
 
+## Instalacion en Proxmox/LXC
+
+Si usas Proxmox VE, puedes crear un LXC Debian nuevo y preparar ProxBot dentro
+del contenedor con:
+
+```bash
+sudo bash scripts/proxmox-lxc-install.sh --dry-run
+sudo bash scripts/proxmox-lxc-install.sh
+```
+
+Guia completa: [docs/PROXMOX-LXC-INSTALL.md](docs/PROXMOX-LXC-INSTALL.md).
+Guia de pruebas: [docs/TESTING-v0.5.0.md](docs/TESTING-v0.5.0.md).
+Usa `--help` para ver opciones. Este instalador no usa Proxmox API ni tokens de
+Proxmox, no borra CTs si algo falla y no arranca el bot por defecto hasta que
+configures `.env`.
+
 ## Produccion con systemd
 
 Consulta [docs/SYSTEMD.md](docs/SYSTEMD.md).
@@ -373,7 +390,8 @@ npm install
 | v0.1.0 | Publicada | Base configurable, panel y diagnostico manual |
 | v0.2.0 | Publicada | Setup guiado, instalador y `/status` |
 | v0.3.0 | Publicada | Monitorizacion automatica y alertas sin spam |
-| v0.4.0 | En desarrollo | Inventario basico del homelab |
+| v0.4.0 | Publicada | Inventario basico del homelab |
+| v0.5.0 | En desarrollo | Instalador Proxmox/LXC |
 
 ### v0.1.0 - Base configurable
 
@@ -434,9 +452,22 @@ Funcionalidades añadidas o en preparacion:
   `location` y `notes`.
 - Documentacion de inventario en [docs/INVENTORY.md](docs/INVENTORY.md).
 
+### v0.5.0 - Instalador Proxmox/LXC
+
+Estado: en desarrollo hasta que se publique la release.
+
+Funcionalidades añadidas o en preparacion:
+
+- Script `scripts/proxmox-lxc-install.sh`.
+- Modo `--dry-run`.
+- Modo default y advanced.
+- Creacion conservadora de LXC Debian desde host Proxmox VE.
+- Instalacion de ProxBot y systemd dentro del contenedor.
+- Documentacion en [docs/PROXMOX-LXC-INSTALL.md](docs/PROXMOX-LXC-INSTALL.md).
+
 ## Proximos pasos
 
-- Mejorar el inventario con ejemplos, autocompletado y pruebas reales.
+- Probar el instalador en un host Proxmox VE real.
 - Valorar una interfaz web solo si aporta valor real.
 
 ## Licencia
