@@ -18,6 +18,18 @@
       }
     ]
   },
+  "permissions": {
+    "enabled": false,
+    "adminRoleIds": [],
+    "protectedCommands": [
+      "ssh",
+      "log",
+      "verlog",
+      "backups",
+      "mantenimiento",
+      "servicio-info"
+    ]
+  },
   "diagnostics": {
     "portTimeoutMs": 2000,
     "urlTimeoutMs": 5000
