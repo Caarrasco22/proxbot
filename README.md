@@ -27,6 +27,7 @@ La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en 
 - Comando `/backups` para documentar backups del homelab.
 - Comando `/mantenimiento` para documentar tareas de mantenimiento.
 - Permisos basicos configurables por roles de Discord (opcional, desactivado por defecto).
+- Comando `/proxmox` para consultar Proxmox VE en modo solo lectura (opcional, desactivado por defecto).
 - Instalacion manual o setup guiado con `npm run setup`.
 - Instalador opcional para desplegar ProxBot en un LXC Debian desde Proxmox VE.
 
@@ -262,6 +263,7 @@ Los timeouts se pueden ajustar en `config.json`:
 - `/ping`: prueba rapida.
 - `/backups`: backups documentados del homelab.
 - `/mantenimiento`: tareas de mantenimiento documentadas.
+- `/proxmox`: consulta Proxmox VE en modo solo lectura (opcional).
 - `/servicios`: listado completo de servicios.
 - `/red`: datos de red.
 
@@ -412,6 +414,7 @@ npm install
 | v0.5.0 | Publicada | Instalador Proxmox/LXC |
 | v0.6.0 | En desarrollo | Backups y mantenimiento documental |
 | v0.7.0 | En desarrollo | Permisos basicos por roles de Discord |
+| v0.8.0 | En desarrollo | Integracion Proxmox VE solo lectura |
 
 ### v0.1.0 - Base configurable
 
@@ -511,10 +514,23 @@ Funcionalidades anadidas:
 - Comprobacion de permisos antes de ejecutar comandos slash y botones de panel.
 - Documentacion en [docs/PERMISSIONS.md](docs/PERMISSIONS.md).
 
+### v0.8.0 - Integracion Proxmox VE solo lectura
+
+Estado: en desarrollo.
+
+Funcionalidades anadidas:
+
+- Utilidad interna `utils/proxmox.js`.
+- Comando `/proxmox` con opciones `estado`, `nodos` y `recursos`.
+- Seccion `integrations.proxmox` en `config.json`.
+- Token de Proxmox leido desde variable de entorno.
+- Documentacion en [docs/PROXMOX-READONLY.md](docs/PROXMOX-READONLY.md).
+
 ## Proximos pasos
 
 - Mantener el proyecto simple, configurable y sin dependencias especificas obligatorias.
 - Valorar integraciones externas solo cuando puedan ser opcionales, seguras y bien documentadas.
+- Preparar v0.9.0: sincronizacion opcional entre Proxmox y el inventario de ProxBot.
 
 ## Licencia
 
