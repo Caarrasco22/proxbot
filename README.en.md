@@ -26,6 +26,7 @@ The core idea is simple: the code does not know your homelab. Services, IPs, dom
 - Shows the latest saved diagnostics with `/ultimodiagnostico`.
 - Shows backup documentation with `/backups`.
 - Shows maintenance task documentation with `/mantenimiento`.
+- Configurable basic permissions via Discord roles (optional, disabled by default).
 - Supports guided setup with `npm run setup`.
 - Includes an optional Proxmox VE installer for deploying ProxBot in a Debian LXC.
 
@@ -373,6 +374,7 @@ npm install
 | v0.4.0 | Released | Basic homelab inventory |
 | v0.5.0 | Released | Proxmox/LXC installer |
 | v0.6.0 | In development | Read-only backup and maintenance documentation |
+| v0.7.0 | In development | Basic Discord role-based permissions |
 
 ### v0.1.0 - Configurable base
 
@@ -459,6 +461,18 @@ Added:
 - Backup and maintenance fields in `config.json`.
 - Documentation in [docs/BACKUPS.en.md](docs/BACKUPS.en.md) and
   [docs/MAINTENANCE.en.md](docs/MAINTENANCE.en.md).
+
+### v0.7.0 - Basic Discord role-based permissions
+
+Status: in development.
+
+Added:
+
+- Internal `utils/permissions.js` utility.
+- `permissions` section in `config.json` with `enabled`, `adminRoleIds`, and
+  `protectedCommands`.
+- Permission check before executing slash commands and panel buttons.
+- Documentation in [docs/PERMISSIONS.en.md](docs/PERMISSIONS.en.md).
 
 ## Next Steps
 
