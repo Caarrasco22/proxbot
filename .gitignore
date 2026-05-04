@@ -5,6 +5,7 @@ data/last-diagnostics.json
 
 .env
 config.json
+proxmox_config.json
 
 *.bak
 *.bak-*
