@@ -27,8 +27,20 @@
       "verlog",
       "backups",
       "mantenimiento",
-      "servicio-info"
+      "servicio-info",
+      "proxmox"
     ]
+  },
+  "integrations": {
+    "proxmox": {
+      "enabled": false,
+      "url": "",
+      "tokenEnv": "PROXMOX_TOKEN",
+      "realm": "pve",
+      "timeoutMs": 5000,
+      "rejectUnauthorized": true,
+      "cacheTtlSeconds": 60
+    }
   },
   "diagnostics": {
     "portTimeoutMs": 2000,

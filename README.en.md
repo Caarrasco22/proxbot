@@ -27,6 +27,7 @@ The core idea is simple: the code does not know your homelab. Services, IPs, dom
 - Shows backup documentation with `/backups`.
 - Shows maintenance task documentation with `/mantenimiento`.
 - Configurable basic permissions via Discord roles (optional, disabled by default).
+- `/proxmox` command to query Proxmox VE in read-only mode (optional, disabled by default).
 - Supports guided setup with `npm run setup`.
 - Includes an optional Proxmox VE installer for deploying ProxBot in a Debian LXC.
 
@@ -255,6 +256,7 @@ Timeouts:
 - `/ping`: quick bot test.
 - `/backups`: documented homelab backups.
 - `/mantenimiento`: documented maintenance tasks.
+- `/proxmox`: query Proxmox VE in read-only mode (optional).
 - `/servicios`: full services list.
 - `/red`: network notes.
 
@@ -375,6 +377,7 @@ npm install
 | v0.5.0 | Released | Proxmox/LXC installer |
 | v0.6.0 | In development | Read-only backup and maintenance documentation |
 | v0.7.0 | In development | Basic Discord role-based permissions |
+| v0.8.0 | In development | Proxmox VE read-only integration |
 
 ### v0.1.0 - Configurable base
 
@@ -474,10 +477,23 @@ Added:
 - Permission check before executing slash commands and panel buttons.
 - Documentation in [docs/PERMISSIONS.en.md](docs/PERMISSIONS.en.md).
 
+### v0.8.0 - Proxmox VE read-only integration
+
+Status: in development.
+
+Added:
+
+- Internal `utils/proxmox.js` utility.
+- `/proxmox` command with `estado`, `nodos`, and `recursos` options.
+- `integrations.proxmox` section in `config.json`.
+- Proxmox token read from environment variable.
+- Documentation in [docs/PROXMOX-READONLY.en.md](docs/PROXMOX-READONLY.en.md).
+
 ## Next Steps
 
 - Keep the project simple, configurable, and free from mandatory service-specific dependencies.
 - Consider external integrations only when they can be optional, safe, and well documented.
+- Prepare v0.9.0: optional sync between Proxmox and ProxBot inventory.
 
 ## License
 
