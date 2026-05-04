@@ -427,7 +427,7 @@ Funcionalidades añadidas:
 
 Estado: publicada.
 
-Funcionalidades añadidas o en preparacion:
+Funcionalidades añadidas:
 
 - Seccion `monitoring` en `config.json`.
 - Motor interno de monitorizacion.
@@ -443,7 +443,7 @@ Funcionalidades añadidas o en preparacion:
 
 Estado: publicada.
 
-Funcionalidades añadidas o en preparacion:
+Funcionalidades añadidas:
 
 - Utilidad interna `utils/inventory.js`.
 - Comando `/inventario`.
@@ -456,7 +456,7 @@ Funcionalidades añadidas o en preparacion:
 
 Estado: publicada.
 
-Funcionalidades añadidas o en preparacion:
+Funcionalidades añadidas:
 
 - Script `scripts/proxmox-lxc-install.sh`.
 - Modo `--dry-run`.
@@ -467,9 +467,9 @@ Funcionalidades añadidas o en preparacion:
 
 ## Proximos pasos
 
-- Pulir documentacion y capturas de v0.5.0.
-- Preparar v0.6.0: backups y mantenimiento documental.
-- Valorar una interfaz web solo si aporta valor real.
+- Preparar v0.6.0: backups y mantenimiento documental en modo solo lectura.
+- Mantener el proyecto simple, configurable y sin dependencias especificas obligatorias.
+- Valorar integraciones externas solo cuando puedan ser opcionales, seguras y bien documentadas.
 
 ## Licencia
 

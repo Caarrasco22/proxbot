@@ -390,7 +390,7 @@ Added:
 
 Status: released.
 
-Added or planned:
+Added:
 
 - `monitoring` section in `config.json`.
 - Internal monitoring engine.
@@ -406,7 +406,7 @@ Added or planned:
 
 Status: released.
 
-Added or planned:
+Added:
 
 - Internal `utils/inventory.js` utility.
 - `/inventario` command.
@@ -419,7 +419,7 @@ Added or planned:
 
 Status: released.
 
-Added or planned:
+Added:
 
 - `scripts/proxmox-lxc-install.sh` script.
 - `--dry-run` mode.
@@ -430,9 +430,9 @@ Added or planned:
 
 ## Next Steps
 
-- Polish v0.5.0 documentation and screenshots.
-- Prepare v0.6.0: backup and maintenance documentation.
-- Consider a web UI only if it becomes genuinely useful.
+- Prepare v0.6.0: read-only backup and maintenance documentation.
+- Keep the project simple, configurable, and free from mandatory service-specific dependencies.
+- Consider external integrations only when they can be optional, safe, and well documented.
 
 ## License
 
