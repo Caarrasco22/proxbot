@@ -24,6 +24,8 @@ La idea es sencilla: el codigo no conoce tu homelab. Todo lo importante vive en 
 - Comando `/status` con informacion basica de instalacion.
 - Comando `/monitor` para consultar el estado de la monitorizacion automatica.
 - Comando `/ultimodiagnostico` para revisar el ultimo diagnostico guardado.
+- Comando `/backups` para documentar backups del homelab.
+- Comando `/mantenimiento` para documentar tareas de mantenimiento.
 - Instalacion manual o setup guiado con `npm run setup`.
 - Instalador opcional para desplegar ProxBot en un LXC Debian desde Proxmox VE.
 
@@ -207,6 +209,19 @@ y no llaman a APIs externas.
 
 Guia completa: [docs/INVENTORY.md](docs/INVENTORY.md).
 
+## Backups y mantenimiento
+
+Los backups y las tareas de mantenimiento estan disponibles desde los botones
+`Backups` y `Mantenimiento` de `/panel`.
+
+`/backups` y `/mantenimiento` muestran documentacion operativa desde
+`config.json` en modo solo lectura. No ejecutan backups reales, no restauran
+datos, no reinician servicios y no llaman a APIs externas.
+
+Guias completas:
+[docs/BACKUPS.md](docs/BACKUPS.md) y
+[docs/MAINTENANCE.md](docs/MAINTENANCE.md).
+
 ## Diagnostico
 
 `/diagnostico` y el boton Diagnostico del panel ejecutan la misma comprobacion real:
@@ -244,6 +259,8 @@ Los timeouts se pueden ajustar en `config.json`:
 - `/seguridad`: checklist de seguridad.
 - `/pendientes`: lista de pendientes.
 - `/ping`: prueba rapida.
+- `/backups`: backups documentados del homelab.
+- `/mantenimiento`: tareas de mantenimiento documentadas.
 - `/servicios`: listado completo de servicios.
 - `/red`: datos de red.
 
@@ -392,6 +409,7 @@ npm install
 | v0.3.0 | Publicada | Monitorizacion automatica y alertas sin spam |
 | v0.4.0 | Publicada | Inventario basico del homelab |
 | v0.5.0 | Publicada | Instalador Proxmox/LXC |
+| v0.6.0 | En desarrollo | Backups y mantenimiento documental |
 
 ### v0.1.0 - Base configurable
 
@@ -465,9 +483,22 @@ Funcionalidades añadidas:
 - Instalacion de ProxBot y systemd dentro del contenedor.
 - Documentacion en [docs/PROXMOX-LXC-INSTALL.md](docs/PROXMOX-LXC-INSTALL.md).
 
+### v0.6.0 - Backups y mantenimiento documental
+
+Estado: en desarrollo.
+
+Funcionalidades anadidas:
+
+- Utilidad interna `utils/maintenance.js`.
+- Comando `/backups` con filtros por `tag` y `buscar`.
+- Comando `/mantenimiento` con filtros por `tag` y `buscar`.
+- Botones `Backups` y `Mantenimiento` en `/panel`.
+- Campos de backups y mantenimiento en `config.json`.
+- Documentacion en [docs/BACKUPS.md](docs/BACKUPS.md) y
+  [docs/MAINTENANCE.md](docs/MAINTENANCE.md).
+
 ## Proximos pasos
 
-- Preparar v0.6.0: backups y mantenimiento documental en modo solo lectura.
 - Mantener el proyecto simple, configurable y sin dependencias especificas obligatorias.
 - Valorar integraciones externas solo cuando puedan ser opcionales, seguras y bien documentadas.
 

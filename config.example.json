@@ -29,6 +29,38 @@
     "notifyOnlyOnChange": true,
     "runOnStartup": false
   },
+  "maintenance": {
+    "items": [
+      {
+        "name": "Revisar actualizaciones del servidor",
+        "description": "Comprobar actualizaciones pendientes y reinicios necesarios.",
+        "frequency": "mensual",
+        "target": "Servidor principal",
+        "owner": "homelab",
+        "priority": "media",
+        "lastCheck": "2026-01-01",
+        "enabled": true,
+        "notes": "Ejemplo documental. No ejecuta comandos.",
+        "tags": ["mantenimiento", "mensual"]
+      }
+    ]
+  },
+  "backups": {
+    "items": [
+      {
+        "name": "Backup de configuraciones",
+        "description": "Copia periodica de configuraciones importantes.",
+        "source": "/srv/example/config",
+        "destination": "NAS o disco externo",
+        "frequency": "semanal",
+        "method": "rsync manual o herramienta externa",
+        "lastTested": "2026-01-01",
+        "enabled": true,
+        "notes": "Ejemplo documental. ProxBot no ejecuta ni restaura backups.",
+        "tags": ["backup", "config"]
+      }
+    ]
+  },
   "services": [
     {
       "name": "Servidor principal",

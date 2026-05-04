@@ -26,6 +26,13 @@ const {
   formatServiceListItem,
   truncate
 } = require("./utils/inventory");
+const {
+  getActiveBackups,
+  getActiveMaintenanceTasks,
+  formatBackupItem,
+  formatMaintenanceItem,
+  truncate: maintenanceTruncate
+} = require("./utils/maintenance");
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("Falta la variable de entorno: DISCORD_TOKEN");
@@ -290,6 +297,94 @@ function inventarioEmbed() {
   return embed;
 }
 
+function backupsEmbed() {
+  const config = getConfig();
+  const backups = getActiveBackups(config);
+  const visibleBackups = backups.slice(0, 10);
+  const embed = baseEmbed(
+    config,
+    "Backups del homelab",
+    "Backups documentados en config.json. ProxBot solo informa: no ejecuta backups, no restaura y no borra nada."
+  );
+
+  embed.addFields({
+    name: "Resumen",
+    value: `Backups activos: ${backups.length}`,
+    inline: false
+  });
+
+  if (visibleBackups.length === 0) {
+    embed.addFields({
+      name: "Backups",
+      value: "No hay backups activos configurados.",
+      inline: false
+    });
+    return embed;
+  }
+
+  for (const backup of visibleBackups) {
+    embed.addFields({
+      name: maintenanceTruncate(backup.name || "Backup sin nombre", 256),
+      value: formatBackupItem(backup),
+      inline: false
+    });
+  }
+
+  if (backups.length > visibleBackups.length) {
+    embed.addFields({
+      name: "Listado resumido",
+      value: `Se muestran 10 de ${backups.length} backups. Usa /backups para ver mas.`,
+      inline: false
+    });
+  }
+
+  return embed;
+}
+
+function mantenimientoEmbed() {
+  const config = getConfig();
+  const tasks = getActiveMaintenanceTasks(config);
+  const visibleTasks = tasks.slice(0, 10);
+  const embed = baseEmbed(
+    config,
+    "Mantenimiento del homelab",
+    "Tareas documentadas en config.json. ProxBot solo informa: no ejecuta comandos ni cambia la configuracion del servidor."
+  );
+
+  embed.addFields({
+    name: "Resumen",
+    value: `Tareas activas: ${tasks.length}`,
+    inline: false
+  });
+
+  if (visibleTasks.length === 0) {
+    embed.addFields({
+      name: "Tareas",
+      value: "No hay tareas de mantenimiento activas configuradas.",
+      inline: false
+    });
+    return embed;
+  }
+
+  for (const task of visibleTasks) {
+    embed.addFields({
+      name: maintenanceTruncate(task.name || "Tarea sin nombre", 256),
+      value: formatMaintenanceItem(task),
+      inline: false
+    });
+  }
+
+  if (tasks.length > visibleTasks.length) {
+    embed.addFields({
+      name: "Listado resumido",
+      value: `Se muestran 10 de ${tasks.length} tareas. Usa /mantenimiento para ver mas.`,
+      inline: false
+    });
+  }
+
+  return embed;
+}
+
 function buildButtonRows(buttons) {
   const rows = [];
 
@@ -309,7 +404,9 @@ function panelRows() {
     new ButtonBuilder().setCustomId("panel_diagnostico").setLabel("Diagnostico").setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId("panel_ssh").setLabel("SSH").setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId("panel_seguridad").setLabel("Seguridad").setStyle(ButtonStyle.Danger),
-    new ButtonBuilder().setCustomId("panel_pendientes").setLabel("Pendientes").setStyle(ButtonStyle.Secondary)
+    new ButtonBuilder().setCustomId("panel_pendientes").setLabel("Pendientes").setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder().setCustomId("panel_backups").setLabel("Backups").setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder().setCustomId("panel_mantenimiento").setLabel("Mantenimiento").setStyle(ButtonStyle.Secondary)
   ];
 
   const urlButtons = (config.services || [])
@@ -468,7 +565,9 @@ client.on(Events.InteractionCreate, async interaction => {
       panel_inventario: inventarioEmbed,
       panel_ssh: sshEmbed,
       panel_seguridad: seguridadEmbed,
-      panel_pendientes: pendientesEmbed
+      panel_pendientes: pendientesEmbed,
+      panel_backups: backupsEmbed,
+      panel_mantenimiento: mantenimientoEmbed
     };
 
     if (interaction.customId === "panel_diagnostico") {

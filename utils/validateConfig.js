@@ -96,6 +96,62 @@ function validateConfig(config) {
     }
   }
 
+  function validateItemsArray(sectionName, items, expectedStringFields) {
+    if (items === undefined) return;
+
+    if (!Array.isArray(items)) {
+      warnings.push(`\`${sectionName}.items\` deberia ser un array.`);
+      return;
+    }
+
+    items.forEach((item, index) => {
+      if (!item || typeof item !== "object" || Array.isArray(item)) {
+        warnings.push(`${sectionName}.items[${index}] deberia ser un objeto.`);
+        return;
+      }
+
+      if (!item.name) {
+        warnings.push(`${sectionName}.items[${index}] no tiene name.`);
+      }
+
+      if (item.enabled !== undefined && typeof item.enabled !== "boolean") {
+        warnings.push(`${sectionName}.items[${index}].enabled deberia ser boolean.`);
+      }
+
+      if (item.tags !== undefined && !Array.isArray(item.tags)) {
+        warnings.push(`${sectionName}.items[${index}].tags deberia ser un array.`);
+      }
+
+      expectedStringFields.forEach(field => {
+        if (item[field] !== undefined && typeof item[field] !== "string") {
+          warnings.push(`${sectionName}.items[${index}].${field} deberia ser un string.`);
+        }
+      });
+    });
+  }
+
+  if (config.maintenance !== undefined) {
+    if (!config.maintenance || typeof config.maintenance !== "object" || Array.isArray(config.maintenance)) {
+      warnings.push("`maintenance` deberia ser un objeto.");
+    } else if (config.maintenance.items !== undefined) {
+      validateItemsArray("maintenance", config.maintenance.items, [
+        "name", "description", "frequency", "frecuencia", "target",
+        "owner", "priority", "lastCheck", "notes", "notas"
+      ]);
+    }
+  }
+
+  if (config.backups !== undefined) {
+    if (!config.backups || typeof config.backups !== "object" || Array.isArray(config.backups)) {
+      warnings.push("`backups` deberia ser un objeto.");
+    } else if (config.backups.items !== undefined) {
+      validateItemsArray("backups", config.backups.items, [
+        "name", "description", "source", "destination",
+        "frequency", "frecuencia", "method", "lastTested", "notes", "notas"
+      ]);
+    }
+  }
+
   if (!Array.isArray(config.services)) {
     errors.push("`services` debe ser un array.");
   } else {
