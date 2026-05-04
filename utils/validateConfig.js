@@ -76,6 +76,62 @@ function validateConfig(config) {
     }
   }
 
+  if (config.integrations !== undefined) {
+    if (!config.integrations || typeof config.integrations !== "object" || Array.isArray(config.integrations)) {
+      warnings.push("`integrations` deberia ser un objeto.");
+    } else {
+      if (config.integrations.proxmox !== undefined) {
+        const proxmox = config.integrations.proxmox;
+
+        if (!proxmox || typeof proxmox !== "object" || Array.isArray(proxmox)) {
+          warnings.push("`integrations.proxmox` deberia ser un objeto.");
+        } else {
+          if (proxmox.enabled !== undefined && typeof proxmox.enabled !== "boolean") {
+            warnings.push("`integrations.proxmox.enabled` deberia ser boolean.");
+          }
+
+          if (proxmox.url !== undefined && typeof proxmox.url !== "string") {
+            warnings.push("`integrations.proxmox.url` deberia ser un string.");
+          }
+
+          if (proxmox.tokenEnv !== undefined && typeof proxmox.tokenEnv !== "string") {
+            warnings.push("`integrations.proxmox.tokenEnv` deberia ser un string.");
+          }
+
+          if (proxmox.realm !== undefined && typeof proxmox.realm !== "string") {
+            warnings.push("`integrations.proxmox.realm` deberia ser un string.");
+          }
+
+          if (proxmox.timeoutMs !== undefined) {
+            if (typeof proxmox.timeoutMs !== "number" || proxmox.timeoutMs < 1000) {
+              warnings.push("`integrations.proxmox.timeoutMs` deberia ser un numero mayor o igual a 1000.");
+            }
+          }
+
+          if (proxmox.rejectUnauthorized !== undefined && typeof proxmox.rejectUnauthorized !== "boolean") {
+            warnings.push("`integrations.proxmox.rejectUnauthorized` deberia ser boolean.");
+          }
+
+          if (proxmox.cacheTtlSeconds !== undefined) {
+            if (typeof proxmox.cacheTtlSeconds !== "number" || proxmox.cacheTtlSeconds < 0) {
+              warnings.push("`integrations.proxmox.cacheTtlSeconds` deberia ser un numero mayor o igual a 0.");
+            }
+          }
+
+          if (proxmox.enabled === true) {
+            if (!proxmox.url || !String(proxmox.url).trim()) {
+              warnings.push("`integrations.proxmox.enabled` es true pero `url` esta vacia.");
+            }
+
+            if (!proxmox.tokenEnv || !String(proxmox.tokenEnv).trim()) {
+              warnings.push("`integrations.proxmox.enabled` es true pero `tokenEnv` esta vacio.");
+            }
+          }
+        }
+      }
+    }
+  }
+
   if (config.diagnostics !== undefined) {
     if (!config.diagnostics || typeof config.diagnostics !== "object" || Array.isArray(config.diagnostics)) {
       warnings.push("`diagnostics` deberia ser un objeto.");
