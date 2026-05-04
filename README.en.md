@@ -24,6 +24,8 @@ The core idea is simple: the code does not know your homelab. Services, IPs, dom
 - Shows installation status with `/status`.
 - Shows automatic monitoring status with `/monitor`.
 - Shows the latest saved diagnostics with `/ultimodiagnostico`.
+- Shows backup documentation with `/backups`.
+- Shows maintenance task documentation with `/mantenimiento`.
 - Supports guided setup with `npm run setup`.
 - Includes an optional Proxmox VE installer for deploying ProxBot in a Debian LXC.
 
@@ -200,6 +202,19 @@ not call external APIs.
 
 Full guide: [docs/INVENTORY.en.md](docs/INVENTORY.en.md).
 
+## Backups and Maintenance
+
+Backups and maintenance tasks are available from the `Backups` and
+`Mantenimiento` buttons in `/panel`.
+
+`/backups` and `/mantenimiento` show operational documentation from
+`config.json` in read-only mode. They do not run real backups, restore data,
+restart services, or call external APIs.
+
+Full guides:
+[docs/BACKUPS.en.md](docs/BACKUPS.en.md) and
+[docs/MAINTENANCE.en.md](docs/MAINTENANCE.en.md).
+
 ## Diagnostics
 
 `/diagnostico` and the Diagnostico panel button run the same real checks:
@@ -237,6 +252,8 @@ Timeouts:
 - `/seguridad`: security checklist.
 - `/pendientes`: pending tasks.
 - `/ping`: quick bot test.
+- `/backups`: documented homelab backups.
+- `/mantenimiento`: documented maintenance tasks.
 - `/servicios`: full services list.
 - `/red`: network notes.
 
@@ -355,6 +372,7 @@ npm install
 | v0.3.0 | Released | Automatic monitoring and no-spam alerts |
 | v0.4.0 | Released | Basic homelab inventory |
 | v0.5.0 | Released | Proxmox/LXC installer |
+| v0.6.0 | In development | Read-only backup and maintenance documentation |
 
 ### v0.1.0 - Configurable base
 
@@ -428,9 +446,22 @@ Added:
 - ProxBot and systemd setup inside the container.
 - Documentation in [docs/PROXMOX-LXC-INSTALL.en.md](docs/PROXMOX-LXC-INSTALL.en.md).
 
+### v0.6.0 - Read-only backup and maintenance documentation
+
+Status: in development.
+
+Added:
+
+- Internal `utils/maintenance.js` utility.
+- `/backups` command with `tag` and `buscar` filters.
+- `/mantenimiento` command with `tag` and `buscar` filters.
+- `Backups` and `Mantenimiento` buttons in `/panel`.
+- Backup and maintenance fields in `config.json`.
+- Documentation in [docs/BACKUPS.en.md](docs/BACKUPS.en.md) and
+  [docs/MAINTENANCE.en.md](docs/MAINTENANCE.en.md).
+
 ## Next Steps
 
-- Prepare v0.6.0: read-only backup and maintenance documentation.
 - Keep the project simple, configurable, and free from mandatory service-specific dependencies.
 - Consider external integrations only when they can be optional, safe, and well documented.
 
