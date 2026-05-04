@@ -33,6 +33,13 @@ const {
   formatMaintenanceItem,
   truncate: maintenanceTruncate
 } = require("./utils/maintenance");
+const {
+  isPermissionsEnabled,
+  canUseCommand,
+  canUsePanelCommand,
+  protectedCommandMessage,
+  panelCommandName
+} = require("./utils/permissions");
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("Falta la variable de entorno: DISCORD_TOKEN");
@@ -570,7 +577,13 @@ client.on(Events.InteractionCreate, async interaction => {
       panel_mantenimiento: mantenimientoEmbed
     };
 
+    const config = getConfig();
+
     if (interaction.customId === "panel_diagnostico") {
+      if (!canUsePanelCommand(interaction, config, "diagnostico")) {
+        await interaction.reply({ content: protectedCommandMessage("diagnostico"), ephemeral: true });
+        return;
+      }
       await interaction.deferReply({ ephemeral: true });
       await interaction.editReply({ embeds: [await diagnosticoEmbed()] });
       return;
@@ -580,6 +593,12 @@ client.on(Events.InteractionCreate, async interaction => {
 
     if (!builder) {
       await interaction.reply({ content: "Boton no reconocido.", ephemeral: true });
+      return;
+    }
+
+    const panelCmdName = panelCommandName(interaction.customId);
+    if (panelCmdName && !canUsePanelCommand(interaction, config, panelCmdName)) {
+      await interaction.reply({ content: protectedCommandMessage(panelCmdName), ephemeral: true });
       return;
     }
 
@@ -597,6 +616,15 @@ client.on(Events.InteractionCreate, async interaction => {
   if (!command) {
     await interaction.reply({
       content: "Ese comando no existe.",
+      ephemeral: true
+    });
+    return;
+  }
+
+  const cmdConfig = getConfig();
+  if (!canUseCommand(interaction, cmdConfig)) {
+    await interaction.reply({
+      content: protectedCommandMessage(interaction.commandName),
       ephemeral: true
     });
     return;

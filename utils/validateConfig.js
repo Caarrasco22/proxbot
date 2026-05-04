@@ -32,6 +32,50 @@ function validateConfig(config) {
     }
   }
 
+  if (config.permissions !== undefined) {
+    if (!config.permissions || typeof config.permissions !== "object" || Array.isArray(config.permissions)) {
+      warnings.push("`permissions` deberia ser un objeto.");
+    } else {
+      if (
+        config.permissions.enabled !== undefined &&
+        typeof config.permissions.enabled !== "boolean"
+      ) {
+        warnings.push("`permissions.enabled` deberia ser boolean.");
+      }
+
+      if (config.permissions.adminRoleIds !== undefined) {
+        if (!Array.isArray(config.permissions.adminRoleIds)) {
+          warnings.push("`permissions.adminRoleIds` deberia ser un array.");
+        } else {
+          config.permissions.adminRoleIds.forEach((roleId, index) => {
+            if (typeof roleId !== "string") {
+              warnings.push(`\`permissions.adminRoleIds[${index}]\` deberia ser un string.`);
+            }
+          });
+
+          if (
+            config.permissions.enabled === true &&
+            config.permissions.adminRoleIds.length === 0
+          ) {
+            warnings.push("`permissions.enabled` es true pero `adminRoleIds` esta vacio. Los comandos protegidos estaran bloqueados para todos.");
+          }
+        }
+      }
+
+      if (config.permissions.protectedCommands !== undefined) {
+        if (!Array.isArray(config.permissions.protectedCommands)) {
+          warnings.push("`permissions.protectedCommands` deberia ser un array.");
+        } else {
+          config.permissions.protectedCommands.forEach((cmd, index) => {
+            if (typeof cmd !== "string") {
+              warnings.push(`\`permissions.protectedCommands[${index}]\` deberia ser un string.`);
+            }
+          });
+        }
+      }
+    }
+  }
+
   if (config.diagnostics !== undefined) {
     if (!config.diagnostics || typeof config.diagnostics !== "object" || Array.isArray(config.diagnostics)) {
       warnings.push("`diagnostics` deberia ser un objeto.");
