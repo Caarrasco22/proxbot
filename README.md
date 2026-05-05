@@ -1,5 +1,10 @@
 # ProxBot v.1
 
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18-blue.svg)](https://nodejs.org)
+[![Discord.js](https://img.shields.io/badge/built%20with-Discord.js-5865F2.svg)](https://discord.js.org)
+[![Version](https://img.shields.io/badge/version-0.9.0-brightgreen.svg)]()
+
 [English version](README.en.md)
 
 ProxBot v.1 es un bot de Discord configurable para homelabs. Sirve como panel rapido, listado de servicios, chuleta SSH, notas simples y herramienta de diagnostico real para redes domesticas, laboratorios y servicios self-hosted.
