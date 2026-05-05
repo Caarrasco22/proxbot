@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 function getProxmoxConfig(config) {
   const integrations = (config && config.integrations) || {};
   return (integrations && integrations.proxmox) || {};
@@ -107,6 +110,86 @@ async function getProxmoxResources(config) {
   return Array.isArray(data.data) ? data.data : [];
 }
 
+function resolveInventoryCachePath(config) {
+  const proxmox = getProxmoxConfig(config);
+  const configuredPath = typeof proxmox.inventoryCachePath === "string" ? proxmox.inventoryCachePath.trim() : "";
+
+  if (!configuredPath) {
+    return null;
+  }
+
+  const basePath = path.resolve(process.cwd());
+  const resolvedPath = path.resolve(basePath, configuredPath);
+
+  if (!resolvedPath.startsWith(basePath + path.sep) && resolvedPath !== basePath) {
+    return null;
+  }
+
+  return resolvedPath;
+}
+
+async function getProxmoxInventoryResources(config) {
+  const resources = await getProxmoxResources(config);
+  return resources.filter(r => r.type === "qemu" || r.type === "lxc");
+}
+
+function readInventoryCache(config) {
+  const cachePath = resolveInventoryCachePath(config);
+
+  if (!cachePath) {
+    return null;
+  }
+
+  if (!fs.existsSync(cachePath)) {
+    return null;
+  }
+
+  try {
+    const raw = fs.readFileSync(cachePath, "utf8");
+    const parsed = JSON.parse(raw);
+
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      typeof parsed.timestamp === "string" &&
+      Array.isArray(parsed.resources)
+    ) {
+      return parsed;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function writeInventoryCache(config, resources) {
+  const cachePath = resolveInventoryCachePath(config);
+
+  if (!cachePath) {
+    return false;
+  }
+
+  if (!Array.isArray(resources)) {
+    return false;
+  }
+
+  try {
+    const dir = path.dirname(cachePath);
+    fs.mkdirSync(dir, { recursive: true });
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      resources
+    };
+
+    fs.writeFileSync(cachePath, JSON.stringify(payload, null, 2), "utf8");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 module.exports = {
   getProxmoxConfig,
   isProxmoxEnabled,
@@ -117,5 +200,9 @@ module.exports = {
   proxmoxFetch,
   getProxmoxVersion,
   getProxmoxNodes,
-  getProxmoxResources
+  getProxmoxResources,
+  getProxmoxInventoryResources,
+  readInventoryCache,
+  writeInventoryCache,
+  resolveInventoryCachePath
 };

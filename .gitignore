@@ -2,6 +2,7 @@ node_modules/
 logs/
 data/status-cache.json
 data/last-diagnostics.json
+data/proxmox-inventory-cache.json
 
 .env
 config.json

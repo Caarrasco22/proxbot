@@ -40,6 +40,13 @@ const {
   protectedCommandMessage,
   panelCommandName
 } = require("./utils/permissions");
+const {
+  isProxmoxEnabled,
+  getProxmoxUrl,
+  getProxmoxToken,
+  getProxmoxInventoryResources,
+  readInventoryCache
+} = require("./utils/proxmox");
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("Falta la variable de entorno: DISCORD_TOKEN");
@@ -392,6 +399,145 @@ function mantenimientoEmbed() {
   return embed;
 }
 
+function formatBytes(bytes) {
+  if (bytes === undefined || bytes === null) return "N/A";
+  const num = Number(bytes);
+  if (!Number.isFinite(num) || num < 0) return "N/A";
+
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let value = num;
+  let unitIndex = 0;
+
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${value.toFixed(1)} ${units[unitIndex]}`;
+}
+
+async function proxmoxInventarioPanelEmbed() {
+  const config = getConfig();
+
+  if (!isProxmoxEnabled(config)) {
+    return baseEmbed(config, "Inventario Proxmox", "La integracion Proxmox esta desactivada en config.json.");
+  }
+
+  if (!getProxmoxUrl(config)) {
+    return baseEmbed(config, "Inventario Proxmox", "La URL de Proxmox no esta configurada.");
+  }
+
+  if (!getProxmoxToken(config)) {
+    return baseEmbed(config, "Inventario Proxmox", "El token de Proxmox no esta configurado en la variable de entorno.");
+  }
+
+  try {
+    const resources = await getProxmoxInventoryResources(config);
+    const vmCount = resources.filter(r => r.type === "qemu").length;
+    const ctCount = resources.filter(r => r.type === "lxc").length;
+
+    const embed = baseEmbed(
+      config,
+      "Inventario detectado desde Proxmox VE",
+      "Solo lectura. No modifica config.json."
+    );
+
+    embed.addFields({
+      name: "Resumen",
+      value: [
+        `Recursos detectados: ${resources.length}`,
+        `VMs (qemu): ${vmCount}`,
+        `CTs (lxc): ${ctCount}`
+      ].join("\n"),
+      inline: false
+    });
+
+    if (resources.length === 0) {
+      embed.addFields({
+        name: "Recursos",
+        value: "No se encontraron VMs ni CTs en el cluster.",
+        inline: false
+      });
+      return embed;
+    }
+
+    for (const res of resources.slice(0, 10)) {
+      const lines = [
+        `Tipo: ${res.type || "desconocido"}`,
+        res.status ? `Estado: ${res.status}` : null,
+        res.node ? `Nodo: ${res.node}` : null,
+        res.vmid !== undefined ? `VMID: ${res.vmid}` : null,
+        res.maxmem !== undefined ? `Memoria max: ${formatBytes(res.maxmem)}` : null
+      ].filter(Boolean);
+
+      embed.addFields({
+        name: truncate(res.name || `Recurso ${res.vmid || "sin ID"}`, 256),
+        value: lines.join("\n") || "Sin detalles.",
+        inline: false
+      });
+    }
+
+    if (resources.length > 10) {
+      embed.addFields({
+        name: "Resultado truncado",
+        value: `Se muestran 10 de ${resources.length} recursos. Usa /proxmox-inventario para ver mas.`,
+        inline: false
+      });
+    }
+
+    return embed;
+  } catch (error) {
+    console.error("Error en panel_proxmox_inventario:", error.message);
+
+    const cached = readInventoryCache(config);
+
+    if (cached) {
+      const resources = cached.resources || [];
+      const vmCount = resources.filter(r => r.type === "qemu").length;
+      const ctCount = resources.filter(r => r.type === "lxc").length;
+
+      const embed = baseEmbed(
+        config,
+        "Inventario detectado desde Proxmox VE",
+        `No se pudo consultar Proxmox. Mostrando cache de ${cached.timestamp}.`
+      );
+
+      embed.addFields({
+        name: "Resumen",
+        value: [
+          `Recursos detectados: ${resources.length}`,
+          `VMs (qemu): ${vmCount}`,
+          `CTs (lxc): ${ctCount}`
+        ].join("\n"),
+        inline: false
+      });
+
+      for (const res of resources.slice(0, 10)) {
+        const lines = [
+          `Tipo: ${res.type || "desconocido"}`,
+          res.status ? `Estado: ${res.status}` : null,
+          res.node ? `Nodo: ${res.node}` : null,
+          res.vmid !== undefined ? `VMID: ${res.vmid}` : null
+        ].filter(Boolean);
+
+        embed.addFields({
+          name: truncate(res.name || `Recurso ${res.vmid || "sin ID"}`, 256),
+          value: lines.join("\n") || "Sin detalles.",
+          inline: false
+        });
+      }
+
+      return embed;
+    }
+
+    return baseEmbed(
+      config,
+      "Inventario Proxmox",
+      "No se pudo consultar Proxmox y no hay cache disponible. Revisa la configuracion y la conectividad."
+    );
+  }
+}
+
 function buildButtonRows(buttons) {
   const rows = [];
 
@@ -413,7 +559,8 @@ function panelRows() {
     new ButtonBuilder().setCustomId("panel_seguridad").setLabel("Seguridad").setStyle(ButtonStyle.Danger),
     new ButtonBuilder().setCustomId("panel_pendientes").setLabel("Pendientes").setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId("panel_backups").setLabel("Backups").setStyle(ButtonStyle.Secondary),
-    new ButtonBuilder().setCustomId("panel_mantenimiento").setLabel("Mantenimiento").setStyle(ButtonStyle.Secondary)
+    new ButtonBuilder().setCustomId("panel_mantenimiento").setLabel("Mantenimiento").setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder().setCustomId("panel_proxmox_inventario").setLabel("Proxmox").setStyle(ButtonStyle.Secondary)
   ];
 
   const urlButtons = (config.services || [])
@@ -586,6 +733,16 @@ client.on(Events.InteractionCreate, async interaction => {
       }
       await interaction.deferReply({ ephemeral: true });
       await interaction.editReply({ embeds: [await diagnosticoEmbed()] });
+      return;
+    }
+
+    if (interaction.customId === "panel_proxmox_inventario") {
+      if (!canUsePanelCommand(interaction, config, "proxmox-inventario")) {
+        await interaction.reply({ content: protectedCommandMessage("proxmox-inventario"), ephemeral: true });
+        return;
+      }
+      await interaction.deferReply({ ephemeral: true });
+      await interaction.editReply({ embeds: [await proxmoxInventarioPanelEmbed()] });
       return;
     }
 

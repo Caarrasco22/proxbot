@@ -118,6 +118,14 @@ function validateConfig(config) {
             }
           }
 
+          if (proxmox.inventoryCachePath !== undefined) {
+            if (typeof proxmox.inventoryCachePath !== "string") {
+              warnings.push("`integrations.proxmox.inventoryCachePath` deberia ser un string.");
+            } else if (!proxmox.inventoryCachePath.trim()) {
+              warnings.push("`integrations.proxmox.inventoryCachePath` esta vacio. Se ignorara.");
+            }
+          }
+
           if (proxmox.enabled === true) {
             if (!proxmox.url || !String(proxmox.url).trim()) {
               warnings.push("`integrations.proxmox.enabled` es true pero `url` esta vacia.");

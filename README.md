@@ -264,6 +264,7 @@ Los timeouts se pueden ajustar en `config.json`:
 - `/backups`: backups documentados del homelab.
 - `/mantenimiento`: tareas de mantenimiento documentadas.
 - `/proxmox`: consulta Proxmox VE en modo solo lectura (opcional).
+- `/proxmox-inventario`: inventario detectado desde Proxmox VE, con cache local opcional (solo lectura).
 - `/servicios`: listado completo de servicios.
 - `/red`: datos de red.
 
@@ -271,7 +272,7 @@ Los timeouts se pueden ajustar en `config.json`:
 
 ### Panel principal
 
-Vista rapida con accesos, red, diagnostico, SSH, seguridad y servicios con URL.
+Vista rapida con accesos, red, diagnostico, SSH, seguridad, inventario Proxmox y servicios con URL.
 
 ![Panel principal de ProxBot](docs/images/proxbot-panel.png)
 
@@ -412,9 +413,10 @@ npm install
 | v0.3.0 | Publicada | Monitorizacion automatica y alertas sin spam |
 | v0.4.0 | Publicada | Inventario basico del homelab |
 | v0.5.0 | Publicada | Instalador Proxmox/LXC |
-| v0.6.0 | En desarrollo | Backups y mantenimiento documental |
-| v0.7.0 | En desarrollo | Permisos basicos por roles de Discord |
-| v0.8.0 | En desarrollo | Integracion Proxmox VE solo lectura |
+| v0.6.0 | Publicada | Backups y mantenimiento documental |
+| v0.7.0 | Publicada | Permisos basicos por roles de Discord |
+| v0.8.0 | Publicada | Integracion Proxmox VE solo lectura |
+| v0.9.0 | En desarrollo | Inventario detectado desde Proxmox VE |
 
 ### v0.1.0 - Base configurable
 
@@ -516,7 +518,7 @@ Funcionalidades anadidas:
 
 ### v0.8.0 - Integracion Proxmox VE solo lectura
 
-Estado: en desarrollo.
+Estado: publicada.
 
 Funcionalidades anadidas:
 
@@ -526,11 +528,23 @@ Funcionalidades anadidas:
 - Token de Proxmox leido desde variable de entorno.
 - Documentacion en [docs/PROXMOX-READONLY.md](docs/PROXMOX-READONLY.md).
 
+### v0.9.0 - Inventario detectado desde Proxmox VE
+
+Estado: en desarrollo.
+
+Funcionalidades anadidas:
+
+- Comando `/proxmox-inventario` con opciones `ver` y `cache`.
+- Utilidades de cache local en `utils/proxmox.js`: `getProxmoxInventoryResources`, `readInventoryCache`, `writeInventoryCache`.
+- Cache local opcional en `data/proxmox-inventory-cache.json`, ignorada por Git.
+- Solo lectura: no modifica `config.json` ni el inventario manual.
+- Documentacion en [docs/PROXMOX-INVENTORY.md](docs/PROXMOX-INVENTORY.md).
+
 ## Proximos pasos
 
 - Mantener el proyecto simple, configurable y sin dependencias especificas obligatorias.
 - Valorar integraciones externas solo cuando puedan ser opcionales, seguras y bien documentadas.
-- Preparar v0.9.0: sincronizacion opcional entre Proxmox y el inventario de ProxBot.
+- Preparar futuras versiones: mejoras en cache, filtros adicionales o sincronizacion manual guiada.
 
 ## Licencia
 

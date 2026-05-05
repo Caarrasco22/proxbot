@@ -119,22 +119,29 @@ of TLS validation.
 /proxmox estado
 /proxmox nodos
 /proxmox recursos
+/proxmox-inventario ver
+/proxmox-inventario cache
 ```
 
 - `estado`: shows the Proxmox API version.
 - `nodos`: lists cluster nodes with CPU, memory, and uptime.
 - `recursos`: lists detected VMs, CTs, and storage.
+- `proxmox-inventario`: shows a structured summary of detected VMs and CTs,
+  with optional local cache.
+  See [docs/PROXMOX-INVENTORY.en.md](PROXMOX-INVENTORY.en.md) for details.
 
 ## Discord Permissions
 
-It is recommended to protect `/proxmox` with ProxBot's permission system.
-Add `"proxmox"` to `permissions.protectedCommands` in `config.json`.
+It is recommended to protect `/proxmox` and `/proxmox-inventario` with ProxBot's
+permission system. Add `"proxmox"` and `"proxmox-inventario"` to
+`permissions.protectedCommands` in `config.json`.
 
 ## Limitations
 
 - Read-only: does not start, stop, restart, or delete resources.
+- Does not modify `config.json` or the manual inventory.
 - Does not automatically sync with ProxBot's inventory.
-- Does not write local files with Proxmox data.
+- Does not write local files with Proxmox data (except optional inventory cache).
 - Does not work if Proxmox is not accessible from the network where ProxBot
   runs.
 - Depends on the token having read permissions on the API.

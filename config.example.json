@@ -39,7 +39,8 @@
       "realm": "pve",
       "timeoutMs": 5000,
       "rejectUnauthorized": true,
-      "cacheTtlSeconds": 60
+      "cacheTtlSeconds": 60,
+      "inventoryCachePath": "data/proxmox-inventory-cache.json"
     }
   },
   "diagnostics": {
