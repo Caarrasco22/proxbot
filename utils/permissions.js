@@ -17,7 +17,7 @@ function getAdminRoleIds(config) {
 }
 
 function isProtectedCommand(config, commandName) {
-  if (!commandName) return false;
+  if (!commandName) {return false;}
   const protectedCommands = getProtectedCommands(config);
   return protectedCommands.includes(commandName);
 }

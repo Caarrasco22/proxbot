@@ -10,9 +10,9 @@ const {
 function filtersDescription(filters) {
   const active = [];
 
-  if (filters.tag) active.push(`tag=${filters.tag}`);
-  if (filters.categoria) active.push(`categoria=${filters.categoria}`);
-  if (filters.buscar) active.push(`buscar=${filters.buscar}`);
+  if (filters.tag) {active.push(`tag=${filters.tag}`);}
+  if (filters.categoria) {active.push(`categoria=${filters.categoria}`);}
+  if (filters.buscar) {active.push(`buscar=${filters.buscar}`);}
 
   if (active.length === 0) {
     return "Servicios activos definidos en config.json.";

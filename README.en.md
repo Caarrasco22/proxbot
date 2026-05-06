@@ -384,7 +384,8 @@ npm install
 | v0.6.0 | Released | Read-only backup and maintenance documentation |
 | v0.7.0 | Released | Basic Discord role-based permissions |
 | v0.8.0 | Released | Proxmox VE read-only integration |
-| v0.9.0 | In development | Inventory detected from Proxmox VE |
+| v0.9.0 | Released | Inventory detected from Proxmox VE |
+| v1.0.0 | In development | Technical consolidation: tests, linter and refactor |
 
 ### v0.1.0 - Configurable base
 
@@ -498,7 +499,7 @@ Added:
 
 ### v0.9.0 - Inventory detected from Proxmox VE
 
-Status: in development.
+Status: released.
 
 Added:
 
@@ -507,6 +508,17 @@ Added:
 - Optional local cache in `data/proxmox-inventory-cache.json`, ignored by Git.
 - Read-only: does not modify `config.json` or the manual inventory.
 - Documentation in [docs/PROXMOX-INVENTORY.en.md](docs/PROXMOX-INVENTORY.en.md).
+
+### v1.0.0 - Technical consolidation
+
+Status: in development.
+
+Added:
+
+- Unit test suite with Jest.
+- ESLint and Prettier configuration.
+- Modular refactor: extracted `utils/embeds.js`, `utils/panel.js`, and `utils/monitoring-engine.js`.
+- Centralized `CHANGELOG.md`.
 
 ## Next Steps
 

@@ -205,7 +205,7 @@ function validateConfig(config) {
   }
 
   function validateItemsArray(sectionName, items, expectedStringFields) {
-    if (items === undefined) return;
+    if (items === undefined) {return;}
 
     if (!Array.isArray(items)) {
       warnings.push(`\`${sectionName}.items\` deberia ser un array.`);

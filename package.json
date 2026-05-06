@@ -9,7 +9,10 @@
     "deploy": "node deploy-commands.js",
     "init-config": "node scripts/init-config.js",
     "setup": "node scripts/setup.js",
-    "check-config": "node scripts/check-config.js"
+    "check-config": "node scripts/check-config.js",
+    "test": "jest",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\""
   },
   "engines": {
     "node": ">=18"
@@ -17,5 +20,12 @@
   "dependencies": {
     "discord.js": "^14.19.3",
     "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.3.0",
+    "prettier": "^3.8.3"
   }
 }

@@ -74,7 +74,7 @@ async function proxmoxFetch(config, path) {
 
     if (!response.ok) {
       const text = await response.text().catch(() => "Sin detalle");
-      throw new Error(`Proxmox respondio HTTP ${response.status}.`);
+      throw new Error(`Proxmox respondio HTTP ${response.status}: ${text}`);
     }
 
     const data = await response.json().catch(() => null);
@@ -86,7 +86,7 @@ async function proxmoxFetch(config, path) {
     return data;
   } catch (error) {
     if (error.name === "AbortError") {
-      throw new Error("Timeout al conectar con Proxmox.");
+      throw new Error("Timeout al conectar con Proxmox.", { cause: error });
     }
 
     throw error;

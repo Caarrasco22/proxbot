@@ -11,9 +11,9 @@ function formatUptime(seconds) {
   const secs = total % 60;
 
   const parts = [];
-  if (days > 0) parts.push(`${days}d`);
-  if (hours > 0) parts.push(`${hours}h`);
-  if (minutes > 0) parts.push(`${minutes}m`);
+  if (days > 0) {parts.push(`${days}d`);}
+  if (hours > 0) {parts.push(`${hours}h`);}
+  if (minutes > 0) {parts.push(`${minutes}m`);}
   parts.push(`${secs}s`);
 
   return parts.join(" ");

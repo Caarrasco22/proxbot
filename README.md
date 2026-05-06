@@ -421,7 +421,8 @@ npm install
 | v0.6.0 | Publicada | Backups y mantenimiento documental |
 | v0.7.0 | Publicada | Permisos basicos por roles de Discord |
 | v0.8.0 | Publicada | Integracion Proxmox VE solo lectura |
-| v0.9.0 | En desarrollo | Inventario detectado desde Proxmox VE |
+| v0.9.0 | Publicada | Inventario detectado desde Proxmox VE |
+| v1.0.0 | En desarrollo | Consolidacion tecnica: tests, linter y refactor |
 
 ### v0.1.0 - Base configurable
 
@@ -535,7 +536,7 @@ Funcionalidades anadidas:
 
 ### v0.9.0 - Inventario detectado desde Proxmox VE
 
-Estado: en desarrollo.
+Estado: publicada.
 
 Funcionalidades anadidas:
 
@@ -544,6 +545,17 @@ Funcionalidades anadidas:
 - Cache local opcional en `data/proxmox-inventory-cache.json`, ignorada por Git.
 - Solo lectura: no modifica `config.json` ni el inventario manual.
 - Documentacion en [docs/PROXMOX-INVENTORY.md](docs/PROXMOX-INVENTORY.md).
+
+### v1.0.0 - Consolidacion tecnica
+
+Estado: en desarrollo.
+
+Funcionalidades anadidas:
+
+- Suite de tests unitarios con Jest.
+- Configuracion de ESLint y Prettier.
+- Refactor modular: extraccion de `utils/embeds.js`, `utils/panel.js` y `utils/monitoring-engine.js`.
+- `CHANGELOG.md` centralizado.
 
 ## Proximos pasos
 

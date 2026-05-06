@@ -34,7 +34,7 @@ function timestamp() {
 }
 
 function backupFile(filePath) {
-  if (!fs.existsSync(filePath)) return null;
+  if (!fs.existsSync(filePath)) {return null;}
 
   const backupPath = `${filePath}.backup-${timestamp()}`;
   fs.copyFileSync(filePath, backupPath);
@@ -45,7 +45,7 @@ async function confirm(question, defaultValue = false) {
   const suffix = defaultValue ? "[S/n]" : "[s/N]";
   const answer = (await ask(`${question} ${suffix} `)).toLowerCase();
 
-  if (!answer) return defaultValue;
+  if (!answer) {return defaultValue;}
   return answer === "s" || answer === "si" || answer === "y" || answer === "yes";
 }
 
@@ -57,13 +57,13 @@ async function chooseExistingFileAction(label) {
 
   const answer = await ask("Elige una opcion [1]: ");
 
-  if (!answer || answer === "1") return "keep";
-  if (answer === "2") return "recreate";
+  if (!answer || answer === "1") {return "keep";}
+  if (answer === "2") {return "recreate";}
   return "cancel";
 }
 
 async function handleExistingFile(filePath, label) {
-  if (!fs.existsSync(filePath)) return "create";
+  if (!fs.existsSync(filePath)) {return "create";}
 
   const action = await chooseExistingFileAction(label);
 
@@ -91,7 +91,7 @@ async function askOptional(question) {
 }
 
 function parsePort(value) {
-  if (!value) return undefined;
+  if (!value) {return undefined;}
 
   const port = Number(value);
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
@@ -103,7 +103,7 @@ function parsePort(value) {
 }
 
 function parseTags(value) {
-  if (!value) return undefined;
+  if (!value) {return undefined;}
 
   const tags = value
     .split(",")
@@ -174,12 +174,12 @@ async function createConfig() {
     }
 
     const service = { name, enabled, check };
-    if (description) service.description = description;
-    if (host) service.host = host;
-    if (port) service.port = port;
-    if (url) service.url = url;
-    if (sshCommand) service.ssh = sshCommand;
-    if (tags) service.tags = tags;
+    if (description) {service.description = description;}
+    if (host) {service.host = host;}
+    if (port) {service.port = port;}
+    if (url) {service.url = url;}
+    if (sshCommand) {service.ssh = sshCommand;}
+    if (tags) {service.tags = tags;}
     services.push(service);
 
     if (localDomain) {

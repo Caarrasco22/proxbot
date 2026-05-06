@@ -11,7 +11,7 @@ const {
 
 function truncate(text, maxLength = 256) {
   const str = String(text || "");
-  if (str.length <= maxLength) return str;
+  if (str.length <= maxLength) {return str;}
   return `${str.slice(0, Math.max(maxLength - 3, 0))}...`;
 }
 
@@ -202,9 +202,9 @@ module.exports = {
 };
 
 function formatBytes(bytes) {
-  if (bytes === undefined || bytes === null) return "N/A";
+  if (bytes === undefined || bytes === null) {return "N/A";}
   const num = Number(bytes);
-  if (!Number.isFinite(num) || num < 0) return "N/A";
+  if (!Number.isFinite(num) || num < 0) {return "N/A";}
 
   const units = ["B", "KB", "MB", "GB", "TB"];
   let value = num;
@@ -225,9 +225,9 @@ function formatUptime(seconds) {
   const minutes = Math.floor((total % 3600) / 60);
 
   const parts = [];
-  if (days > 0) parts.push(`${days}d`);
-  if (hours > 0) parts.push(`${hours}h`);
-  if (minutes > 0) parts.push(`${minutes}m`);
+  if (days > 0) {parts.push(`${days}d`);}
+  if (hours > 0) {parts.push(`${hours}h`);}
+  if (minutes > 0) {parts.push(`${minutes}m`);}
 
   return parts.join(" ") || "< 1m";
 }

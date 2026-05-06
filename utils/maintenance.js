@@ -100,13 +100,13 @@ function formatMaintenanceItem(item) {
 }
 
 function matchesTag(item, tag) {
-  if (!tag) return true;
+  if (!tag) {return true;}
   const tags = asArray(item.tags);
   return tags.some(t => String(t).toLowerCase() === tag.toLowerCase());
 }
 
 function matchesSearch(item, query) {
-  if (!query) return true;
+  if (!query) {return true;}
   const q = query.toLowerCase();
   const fields = [
     item.name,

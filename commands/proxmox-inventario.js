@@ -11,14 +11,14 @@ const {
 
 function truncate(text, maxLength = 256) {
   const str = String(text || "");
-  if (str.length <= maxLength) return str;
+  if (str.length <= maxLength) {return str;}
   return `${str.slice(0, Math.max(maxLength - 3, 0))}...`;
 }
 
 function formatBytes(bytes) {
-  if (bytes === undefined || bytes === null) return "N/A";
+  if (bytes === undefined || bytes === null) {return "N/A";}
   const num = Number(bytes);
-  if (!Number.isFinite(num) || num < 0) return "N/A";
+  if (!Number.isFinite(num) || num < 0) {return "N/A";}
 
   const units = ["B", "KB", "MB", "GB", "TB"];
   let value = num;
